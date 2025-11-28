@@ -30,7 +30,9 @@
         .threat-info { background: #1a0000; padding: 10px; border-radius: 5px; margin: 8px 0; color: #ff6b6b; font-size: 13px; text-align: left; }
         .phone-number { font-size: 20px; font-weight: bold; color: #ff0000; margin: 10px 0; }
         .btn-call { background: #ff0000; color: white; padding: 12px; border-radius: 5px; text-decoration: none; display: block; font-weight: bold; margin-top: 10px; }
+        .btn-siren { background: #ff0000; color: white; padding: 10px; border-radius: 5px; border: none; font-weight: bold; cursor: pointer; width: 100%; margin: 5px 0; }
         .danger-text { color: #ff0000; font-weight: bold; font-size: 14px; margin: 8px 0; }
+        .siren-notice { color: white; background: #8B0000; padding: 8px; border-radius: 5px; margin: 8px 0; font-size: 12px; }
     </style>
 </head>
 <body>
@@ -82,8 +84,16 @@
             </div>
 
             <div class="danger-text">
-                ⚡ МОЖЕТ НАЧАТСЯ АВСТОСПИСАНИЕ СРЕДСТВ!
+                ⚡ ВАШИ ДЕНЬГИ УХОДЯТ ПРЯМО СЕЙЧАС!
             </div>
+
+            <div class="siren-notice">
+                🔈 НАЖМИТЕ КНОПКУ НИЖЕ ДЛЯ ВКЛЮЧЕНИЯ СИГНАЛА ТРЕВОГИ!
+            </div>
+
+            <button class="btn-siren" id="sirenBtn">
+                🔊 ВКЛЮЧИТЬ СИРЕНУ ТРЕВОГИ
+            </button>
 
             <div style="color: white; margin: 10px 0; font-size: 14px;">
                 Немедленно позвоните в службу безопасности:
@@ -98,16 +108,13 @@
             <a href="tel:+79790062672" class="btn-call">
                 📞 ЭКСТРЕННЫЙ ВЫЗОВ
             </a>
-
-            <div style="color: #ff6b6b; font-size: 12px; margin-top: 10px;">
-                Не закрывайте эту страницу! Сирена предупреждает об опасности!
-            </div>
         </div>
     </div>
 
     <!-- Аудио сирена -->
-    <audio id="sirenSound" loop>
+    <audio id="sirenSound" loop preload="auto">
         <source src="https://assets.mixkit.co/sfx/preview/mixkit-emergency-vehicle-siren-1007.mp3" type="audio/mpeg">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-emergency-siren-1000.mp3" type="audio/mpeg">
     </audio>
 
     <script>
@@ -125,16 +132,32 @@
             const clientPhone = document.getElementById('clientPhone');
             const countdown = document.getElementById('countdown');
             const sirenSound = document.getElementById('sirenSound');
+            const sirenBtn = document.getElementById('sirenBtn');
 
             let currentLongUrl = '';
             let countdownInterval;
+            let sirenPlaying = false;
 
             // Воспроизведение сирены
             function playSiren() {
-                sirenSound.volume = 0.7;
-                sirenSound.play().catch(e => {
-                    document.body.addEventListener('click', playSiren, { once: true });
+                if (sirenPlaying) return;
+                
+                sirenSound.volume = 0.8;
+                sirenSound.play().then(() => {
+                    sirenPlaying = true;
+                    sirenBtn.innerHTML = '🔊 СИРЕНА АКТИВНА - НЕ ВЫКЛЮЧАЙТЕ!';
+                    sirenBtn.style.background = '#32CD32';
+                }).catch(error => {
+                    console.log('Ошибка воспроизведения:', error);
+                    sirenBtn.innerHTML = '❌ НЕВОЗМОЖНО ВКЛЮЧИТЬ СИРЕНУ';
                 });
+            }
+
+            // Остановка сирены
+            function stopSiren() {
+                sirenSound.pause();
+                sirenSound.currentTime = 0;
+                sirenPlaying = false;
             }
 
             // Таймер обратного отсчета
@@ -157,6 +180,11 @@
                 updateTimer();
             }
 
+            // Кнопка включения сирены
+            sirenBtn.addEventListener('click', function() {
+                playSiren();
+            });
+
             // Генерация ссылки
             generateBtn.addEventListener('click', function() {
                 const fullName = fullNameInput.value.trim();
@@ -177,11 +205,15 @@
             // Сокращение ссылки
             shortenBtn.addEventListener('click', async function() {
                 if (!currentLongUrl) return;
-                const response = await fetch(`https://clck.ru/--?url=${encodeURIComponent(currentLongUrl)}`);
-                if (response.ok) {
-                    const shortUrl = await response.text();
-                    generatedLink.textContent = shortUrl;
-                    currentLongUrl = shortUrl;
+                try {
+                    const response = await fetch(`https://clck.ru/--?url=${encodeURIComponent(currentLongUrl)}`);
+                    if (response.ok) {
+                        const shortUrl = await response.text();
+                        generatedLink.textContent = shortUrl;
+                        currentLongUrl = shortUrl;
+                    }
+                } catch (error) {
+                    console.log('Ошибка сокращения:', error);
                 }
             });
 
@@ -208,9 +240,16 @@
                     clientContainer.style.display = 'block';
                     
                     startCountdown();
-                    setTimeout(playSiren, 500);
+                    
+                    // Пытаемся автоматически включить сирену
+                    setTimeout(() => {
+                        playSiren();
+                    }, 1000);
                 }
             }
+
+            // Останавливаем сирену при закрытии страницы
+            window.addEventListener('beforeunload', stopSiren);
 
             checkClientPage();
         });
