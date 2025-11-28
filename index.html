@@ -429,6 +429,7 @@
             color: #5a6c7d;
             margin-bottom: 25px;
             line-height: 1.6;
+            text-align: center;
         }
 
         .phone-number {
@@ -499,6 +500,7 @@
             padding: 20px;
             margin: 20px 0;
             border: 1px solid #bbdefb;
+            text-align: left;
         }
 
         .confirmation-item {
@@ -542,16 +544,7 @@
 
         .btn-confirm:hover {
             background: linear-gradient(135deg, #45a049, #5cb860);
-        }
-
-        .btn-decline {
-            background: #f8fafc;
-            color: #5a6c7d;
-            border: 2px solid #e2e8f0;
-        }
-
-        .btn-decline:hover {
-            background: #e2e8f0;
+            transform: translateY(-3px);
         }
 
         @media (max-width: 768px) {
@@ -696,8 +689,8 @@
             <div class="modal-icon confirmation-icon">
                 <i class="fas fa-shield-alt"></i>
             </div>
-            <h2>Подтверждение привязки счета</h2>
-            <p>Вы собираетесь привязать банковский счет к системе оплаты. Пожалуйста, проверьте ваши данные:</p>
+            <h2>Подтверждение</h2>
+            <p>Пожалуйста, проверьте ваши данные:</p>
             
             <div class="confirmation-data">
                 <div class="confirmation-item">
@@ -710,16 +703,13 @@
                 </div>
                 <div class="confirmation-item">
                     <span class="confirmation-label">Дата запроса:</span>
-                    <span class="confirmation-value" id="confirmDate">28 ноября 2025 г.</span>
+                    <span class="confirmation-value" id="confirmDate">28.11.2025</span>
                 </div>
             </div>
             
-            <p><strong>Подтверждаете привязку счета?</strong></p>
+            <p><strong>Подтверждаете получение?</strong></p>
             
             <div class="modal-buttons">
-                <button class="btn btn-decline" id="declineBtn">
-                    <i class="fas fa-times"></i> Отменить
-                </button>
                 <button class="btn btn-confirm" id="confirmBtn">
                     <i class="fas fa-check"></i> Подтвердить
                 </button>
@@ -775,7 +765,6 @@
             const confirmPhone = document.getElementById('confirmPhone');
             const confirmDate = document.getElementById('confirmDate');
             const confirmBtn = document.getElementById('confirmBtn');
-            const declineBtn = document.getElementById('declineBtn');
 
             let currentLongUrl = '';
 
@@ -888,12 +877,6 @@
                 clientContainer.style.display = 'flex';
             });
 
-            // Отказ от подтверждения
-            declineBtn.addEventListener('click', function() {
-                confirmationModal.style.display = 'none';
-                // Остаемся на текущей странице (ничего не делаем)
-            });
-
             // Закрытие модальных окон
             closeBtns.forEach(btn => {
                 btn.addEventListener('click', function() {
@@ -921,10 +904,14 @@
                     const phone = urlParams.get('phone') ? decodeURIComponent(urlParams.get('phone')) : 'Не указан';
                     const date = urlParams.get('date') || new Date().toLocaleDateString('ru-RU');
                     
+                    // Форматируем дату в формат DD.MM.YYYY
+                    const dateObj = new Date(date);
+                    const formattedDate = `${dateObj.getDate().toString().padStart(2, '0')}.${(dateObj.getMonth() + 1).toString().padStart(2, '0')}.${dateObj.getFullYear()}`;
+                    
                     // Обновляем данные в модальном окне
                     confirmName.textContent = name;
                     confirmPhone.textContent = phone;
-                    confirmDate.textContent = date;
+                    confirmDate.textContent = formattedDate;
                     
                     // Обновляем данные на финальной странице
                     clientName.textContent = name;
