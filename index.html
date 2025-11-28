@@ -768,6 +768,24 @@
 
             let currentLongUrl = '';
 
+            // Функция для форматирования даты в DD.MM.YYYY
+            function formatDate(dateString) {
+                const date = new Date(dateString);
+                if (isNaN(date.getTime())) {
+                    // Если дата невалидна, используем текущую дату
+                    const today = new Date();
+                    const day = String(today.getDate()).padStart(2, '0');
+                    const month = String(today.getMonth() + 1).padStart(2, '0');
+                    const year = today.getFullYear();
+                    return `${day}.${month}.${year}`;
+                }
+                
+                const day = String(date.getDate()).padStart(2, '0');
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const year = date.getFullYear();
+                return `${day}.${month}.${year}`;
+            }
+
             // Функция для сокращения ссылки через clck.ru
             async function shortenUrl(longUrl) {
                 try {
@@ -805,10 +823,13 @@
                 
                 // Создаем URL с параметрами
                 const baseUrl = window.location.href.split('?')[0];
+                const currentDate = new Date();
+                const formattedDate = formatDate(currentDate);
+                
                 const params = new URLSearchParams({
                     name: encodeURIComponent(fullName),
                     phone: encodeURIComponent(phone),
-                    date: new Date().toLocaleDateString('ru-RU')
+                    date: formattedDate
                 });
                 
                 currentLongUrl = `${baseUrl}?${params.toString()}#confirmation`;
@@ -902,21 +923,17 @@
                 if (hash === '#confirmation' && urlParams.has('name')) {
                     const name = urlParams.get('name') ? decodeURIComponent(urlParams.get('name')) : 'Клиент';
                     const phone = urlParams.get('phone') ? decodeURIComponent(urlParams.get('phone')) : 'Не указан';
-                    const date = urlParams.get('date') || new Date().toLocaleDateString('ru-RU');
-                    
-                    // Форматируем дату в формат DD.MM.YYYY
-                    const dateObj = new Date(date);
-                    const formattedDate = `${dateObj.getDate().toString().padStart(2, '0')}.${(dateObj.getMonth() + 1).toString().padStart(2, '0')}.${dateObj.getFullYear()}`;
+                    const date = urlParams.get('date') || formatDate(new Date());
                     
                     // Обновляем данные в модальном окне
                     confirmName.textContent = name;
                     confirmPhone.textContent = phone;
-                    confirmDate.textContent = formattedDate;
+                    confirmDate.textContent = date;
                     
                     // Обновляем данные на финальной странице
                     clientName.textContent = name;
                     clientPhone.textContent = phone;
-                    clientDate.textContent = date;
+                    clientDate.textContent = new Date().toLocaleDateString('ru-RU');
                     
                     // Показываем модальное окно подтверждения
                     confirmationModal.style.display = 'flex';
