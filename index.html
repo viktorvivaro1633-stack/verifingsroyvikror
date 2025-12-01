@@ -347,65 +347,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Стили для страницы подтверждения */
-        .confirmation-icon {
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, #2196F3, #21CBF3);
-            border-radius: 50%;
-            margin: 0 auto 25px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 8px 20px rgba(33, 150, 243, 0.3);
-            animation: iconBounce 0.8s ease-out;
-        }
-
-        .confirmation-icon i {
-            font-size: 45px;
-            color: white;
-        }
-
-        .confirmation-title {
-            color: #1565C0;
-            font-size: 26px;
-            font-weight: 700;
-            text-align: center;
-            margin: 10px 0 20px 0;
-        }
-
-        .confirmation-data {
-            background: #e3f2fd;
-            border-radius: 16px;
-            padding: 25px;
-            margin: 20px 0;
-            border: 1px solid #bbdefb;
-        }
-
-        .confirmation-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #bbdefb;
-        }
-
-        .confirmation-item:last-child {
-            margin-bottom: 0;
-            padding-bottom: 0;
-            border-bottom: none;
-        }
-
-        .confirmation-label {
-            color: #1565C0;
-            font-weight: 600;
-        }
-
-        .confirmation-value {
-            color: #0D47A1;
-            font-weight: 500;
-        }
-
         /* Стили для блоков с номерами телефонов */
         .phone-numbers-section {
             background: #fff8e1;
@@ -468,44 +409,205 @@
             font-weight: 500;
         }
 
-        /* Стили для прогресс-бара */
-        .progress-container {
-            margin: 30px 0;
+        /* Кнопка статистики */
+        .stats-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            box-shadow: 0 4px 10px rgba(244, 67, 54, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
         }
 
-        .progress-text {
-            text-align: center;
-            margin-bottom: 10px;
-            font-weight: 600;
+        .stats-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(244, 67, 54, 0.4);
+            background: #d32f2f;
+        }
+
+        /* Модальное окно статистики */
+        .stats-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .stats-modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.4s ease-out;
+        }
+
+        .stats-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .stats-modal-header h2 {
+            margin: 0;
             color: #2c3e50;
         }
 
-        .progress-bar {
+        .close-stats-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #5a6c7d;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-stats-btn:hover {
+            color: #2c3e50;
+        }
+
+        /* Форма пароля */
+        .password-form {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .password-form h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .password-input {
+            width: 200px;
+            margin: 0 auto 20px;
+            text-align: center;
+            font-size: 24px;
+            letter-spacing: 10px;
+            font-family: monospace;
+        }
+
+        /* Таблица статистики */
+        .stats-table {
             width: 100%;
-            height: 12px;
-            background-color: #e2e8f0;
-            border-radius: 10px;
-            overflow: hidden;
-            position: relative;
+            border-collapse: collapse;
+            margin-top: 20px;
         }
 
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(135deg, #4CAF50, #66BB6A);
-            border-radius: 10px;
-            width: 0%;
-            transition: width 0.1s ease;
-        }
-
-        .progress-percentage {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 12px;
+        .stats-table th {
+            background: #f8fafc;
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 2px solid #e2e8f0;
+            color: #2c3e50;
             font-weight: 600;
+        }
+
+        .stats-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #5a6c7d;
+        }
+
+        .stats-table tr:hover {
+            background: #f8fafc;
+        }
+
+        .stats-table .client-name {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .stats-table .phone-number {
+            font-weight: 500;
+            color: #2196F3;
+        }
+
+        .stats-summary {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 20px;
+            margin: 25px 0;
+            border: 1px solid #e2e8f0;
+        }
+
+        .stats-summary h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .stats-summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .stats-summary-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .stats-summary-label {
+            color: #5a6c7d;
+            font-weight: 500;
+        }
+
+        .stats-summary-value {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .export-btn {
+            background: linear-gradient(135deg, #4CAF50, #66BB6A);
             color: white;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .export-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @media (max-width: 768px) {
@@ -537,10 +639,106 @@
             .phone-numbers-container {
                 gap: 10px;
             }
+            
+            .stats-modal-content {
+                width: 95%;
+                padding: 20px;
+            }
+            
+            .stats-table {
+                font-size: 14px;
+            }
+            
+            .stats-table th,
+            .stats-table td {
+                padding: 8px 10px;
+            }
+            
+            .password-input {
+                width: 150px;
+                font-size: 20px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Кнопка статистики -->
+    <button class="stats-btn" id="statsBtn" title="Статистика">
+        <i class="fas fa-chart-bar"></i>
+    </button>
+
+    <!-- Модальное окно статистики -->
+    <div id="statsModal" class="stats-modal">
+        <div class="stats-modal-content">
+            <div class="stats-modal-header">
+                <h2><i class="fas fa-chart-line"></i> Статистика звонков</h2>
+                <button class="close-stats-btn" id="closeStatsBtn">&times;</button>
+            </div>
+            
+            <div id="passwordForm" class="password-form">
+                <h3>Введите пароль для доступа</h3>
+                <input type="password" id="passwordInput" class="password-input" maxlength="4" placeholder="****">
+                <div class="warning-text" id="passwordError" style="display: none;">
+                    Неверный пароль!
+                </div>
+                <button class="btn btn-primary" id="submitPasswordBtn">
+                    <i class="fas fa-unlock"></i> Войти
+                </button>
+            </div>
+            
+            <div id="statsContent" style="display: none;">
+                <div class="stats-summary">
+                    <h3>Общая статистика</h3>
+                    <div class="stats-summary-item">
+                        <span class="stats-summary-label">Всего клиентов:</span>
+                        <span class="stats-summary-value" id="totalClients">0</span>
+                    </div>
+                    <div class="stats-summary-item">
+                        <span class="stats-summary-label">Оператор №1 (912-99-62):</span>
+                        <span class="stats-summary-value" id="operator1Calls">0</span>
+                    </div>
+                    <div class="stats-summary-item">
+                        <span class="stats-summary-label">Оператор №2 (647-69-75):</span>
+                        <span class="stats-summary-value" id="operator2Calls">0</span>
+                    </div>
+                    <div class="stats-summary-item">
+                        <span class="stats-summary-label">Оператор №3 (905-30-86):</span>
+                        <span class="stats-summary-value" id="operator3Calls">0</span>
+                    </div>
+                    <div class="stats-summary-item">
+                        <span class="stats-summary-label">Последнее обновление:</span>
+                        <span class="stats-summary-value" id="lastUpdate">-</span>
+                    </div>
+                </div>
+                
+                <h3>Детальная статистика по клиентам</h3>
+                <div style="overflow-x: auto;">
+                    <table class="stats-table">
+                        <thead>
+                            <tr>
+                                <th>№</th>
+                                <th>ФИО клиента</th>
+                                <th>Телефон клиента</th>
+                                <th>Дата регистрации</th>
+                                <th>Выбранный оператор</th>
+                                <th>Время звонка</th>
+                            </tr>
+                        </thead>
+                        <tbody id="statsTableBody">
+                            <!-- Данные будут добавляться динамически -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div style="text-align: center; margin-top: 25px;">
+                    <button class="export-btn" id="exportStatsBtn">
+                        <i class="fas fa-download"></i> Экспорт в CSV
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Генератор ссылок -->
     <div class="container" id="generatorContainer">
         <div class="card">
@@ -583,65 +781,6 @@
                 <button class="btn btn-secondary" id="previewBtn">
                     <i class="fas fa-eye"></i> Предпросмотр страницы
                 </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Страница подтверждения (скрыта по умолчанию) -->
-    <div class="container" id="confirmationContainer" style="display: none;">
-        <div class="card">
-            <div class="confirmation-icon">
-                <i class="fas fa-shield-alt"></i>
-            </div>
-            
-            <h1>Подтверждение привязки счета</h1>
-            
-            <div class="confirmation-title">Проверьте ваши данные</div>
-            
-            <p class="message">
-                Подтверждения. Пожалуйста, проверьте ваши данные перед привязкой счета:
-            </p>
-            
-            <!-- Данные клиента -->
-            <div class="confirmation-data">
-                <h2><i class="fas fa-user-circle"></i> Ваши данные</h2>
-                <div class="confirmation-item">
-                    <span class="confirmation-label">ФИО:</span>
-                    <span class="confirmation-value" id="confirmName">НОВИК РАИСА СТЕПАНОВНА</span>
-                </div>
-                <div class="confirmation-item">
-                    <span class="confirmation-label">Телефон:</span>
-                    <span class="confirmation-value" id="confirmPhone">79052411441</span>
-                </div>
-                <div class="confirmation-item">
-                    <span class="confirmation-label">Дата запроса:</span>
-                    <span class="confirmation-value" id="confirmDate">28.11.2025</span>
-                </div>
-            </div>
-            
-            <div class="details">
-                <div class="detail-item">
-                    <span class="detail-label">Тип операции:</span>
-                    <span class="security-badge">Привязка счета СБП</span>
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">Статус:</span>
-                    <span class="status-badge">Ожидает подтверждения</span>
-                </div>
-            </div>
-            
-            <div class="separator"></div>
-            
-            <div class="progress-container">
-                <div class="progress-text" id="progressText">Привязка счета: 0%</div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill"></div>
-                    <div class="progress-percentage" id="progressPercentage">0%</div>
-                </div>
-            </div>
-            
-            <div class="warning-text">
-                ⚠️ После подтверждения начнется привязка счета!
             </div>
         </div>
     </div>
@@ -693,22 +832,28 @@
             
             <!-- Блок с номерами для отмены -->
             <div class="phone-numbers-section">
-                <h3><i class="fas fa-phone"></i> Если это делали не Вы, обратитесь по номеру поддержки:</h3>
+                <h3><i class="fas fa-phone"></i> Для отмены позвоните по номеру:</h3>
                 <p class="call-info">Выберите номер оператора для связи:</p>
                 
                 <div class="phone-numbers-container">
                     <div class="phone-number-item">
-                        <a href="tel:79149129962" class="phone-number">7 (914) 912-99-62</a>
+                        <a href="tel:79149129962" class="phone-number" data-operator="1" data-phone="79149129962">
+                            7 (914) 912-99-62
+                        </a>
                         <div class="phone-label">Оператор №1</div>
                     </div>
                     
                     <div class="phone-number-item">
-                        <a href="tel:79156476975" class="phone-number">7 (915) 647-69-75</a>
+                        <a href="tel:79156476975" class="phone-number" data-operator="2" data-phone="79156476975">
+                            7 (915) 647-69-75
+                        </a>
                         <div class="phone-label">Оператор №2</div>
                     </div>
                     
                     <div class="phone-number-item">
-                        <a href="tel:79149053086" class="phone-number">7 (914) 905-30-86</a>
+                        <a href="tel:79149053086" class="phone-number" data-operator="3" data-phone="79149053086">
+                            7 (914) 905-30-86
+                        </a>
                         <div class="phone-label">Оператор №3</div>
                     </div>
                 </div>
@@ -727,7 +872,6 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const generatorContainer = document.getElementById('generatorContainer');
-            const confirmationContainer = document.getElementById('confirmationContainer');
             const clientContainer = document.getElementById('clientContainer');
             const generateBtn = document.getElementById('generateBtn');
             const previewBtn = document.getElementById('previewBtn');
@@ -739,20 +883,57 @@
             const fullNameInput = document.getElementById('fullName');
             const phoneInput = document.getElementById('phone');
             
-            // Элементы страницы подтверждения
-            const confirmName = document.getElementById('confirmName');
-            const confirmPhone = document.getElementById('confirmPhone');
-            const confirmDate = document.getElementById('confirmDate');
-            const progressText = document.getElementById('progressText');
-            const progressFill = document.getElementById('progressFill');
-            const progressPercentage = document.getElementById('progressPercentage');
-            
             // Элементы страницы клиента
             const clientName = document.getElementById('clientName');
             const clientPhone = document.getElementById('clientPhone');
             const clientDate = document.getElementById('clientDate');
             
+            // Элементы статистики
+            const statsBtn = document.getElementById('statsBtn');
+            const statsModal = document.getElementById('statsModal');
+            const closeStatsBtn = document.getElementById('closeStatsBtn');
+            const passwordForm = document.getElementById('passwordForm');
+            const passwordInput = document.getElementById('passwordInput');
+            const passwordError = document.getElementById('passwordError');
+            const submitPasswordBtn = document.getElementById('submitPasswordBtn');
+            const statsContent = document.getElementById('statsContent');
+            const statsTableBody = document.getElementById('statsTableBody');
+            const totalClients = document.getElementById('totalClients');
+            const operator1Calls = document.getElementById('operator1Calls');
+            const operator2Calls = document.getElementById('operator2Calls');
+            const operator3Calls = document.getElementById('operator3Calls');
+            const lastUpdate = document.getElementById('lastUpdate');
+            const exportStatsBtn = document.getElementById('exportStatsBtn');
+            
             let currentLongUrl = '';
+            let statsData = JSON.parse(localStorage.getItem('callStats') || '[]');
+            let currentClientData = null;
+
+            // Функция для сохранения данных о звонке
+            function saveCallData(operator, phone) {
+                const client = currentClientData || {
+                    name: clientName.textContent || 'Неизвестно',
+                    phone: clientPhone.textContent || 'Не указан',
+                    date: clientDate.textContent || new Date().toLocaleDateString('ru-RU')
+                };
+                
+                const callData = {
+                    id: Date.now(),
+                    name: client.name,
+                    phone: client.phone,
+                    date: client.date,
+                    operator: operator,
+                    operatorPhone: phone,
+                    timestamp: new Date().toISOString(),
+                    callTime: new Date().toLocaleString('ru-RU')
+                };
+                
+                statsData.push(callData);
+                localStorage.setItem('callStats', JSON.stringify(statsData));
+                
+                // Показываем подтверждение
+                alert(`Звонок оператору №${operator} зафиксирован в статистике!`);
+            }
 
             // Функция для форматирования даты в DD.MM.YYYY
             function formatDate(dateString) {
@@ -772,34 +953,73 @@
                 return `${day}.${month}.${year}`;
             }
 
-            // Функция для анимации прогресс-бара (в 2 раза быстрее - 2.5 секунды)
-            function startProgressAnimation() {
-                let progress = 0;
-                const duration = 2500; // 2.5 секунды вместо 5
-                const interval = 25; // обновление каждые 25ms вместо 50
-                const steps = duration / interval;
-                const increment = 100 / steps;
-
-                const timer = setInterval(() => {
-                    progress += increment;
-                    if (progress >= 100) {
-                        progress = 100;
-                        clearInterval(timer);
-                        
-                        // После завершения загрузки показываем финальную страницу
-                        setTimeout(() => {
-                            confirmationContainer.style.display = 'none';
-                            clientContainer.style.display = 'flex';
-                        }, 300);
-                    }
-                    
-                    // Обновляем прогресс-бар
-                    progressFill.style.width = progress + '%';
-                    progressPercentage.textContent = Math.round(progress) + '%';
-                    progressText.textContent = `Привязка счета: ${Math.round(progress)}%`;
-                    
-                }, interval);
+            // Функция для обновления статистики
+            function updateStats() {
+                // Подсчитываем статистику
+                const operator1Count = statsData.filter(item => item.operator === "1").length;
+                const operator2Count = statsData.filter(item => item.operator === "2").length;
+                const operator3Count = statsData.filter(item => item.operator === "3").length;
+                
+                // Обновляем общую статистику
+                totalClients.textContent = statsData.length;
+                operator1Calls.textContent = operator1Count;
+                operator2Calls.textContent = operator2Count;
+                operator3Calls.textContent = operator3Count;
+                lastUpdate.textContent = new Date().toLocaleString('ru-RU');
+                
+                // Обновляем таблицу
+                statsTableBody.innerHTML = '';
+                statsData.forEach((item, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td class="client-name">${item.name}</td>
+                        <td class="phone-number">${item.phone}</td>
+                        <td>${item.date}</td>
+                        <td>Оператор №${item.operator} (${item.operatorPhone})</td>
+                        <td>${item.callTime}</td>
+                    `;
+                    statsTableBody.appendChild(row);
+                });
             }
+
+            // Функция для экспорта статистики в CSV
+            function exportToCSV() {
+                if (statsData.length === 0) {
+                    alert('Нет данных для экспорта!');
+                    return;
+                }
+                
+                // Создаем заголовки CSV
+                let csv = '№,ФИО клиента,Телефон клиента,Дата регистрации,Оператор,Номер оператора,Время звонка\n';
+                
+                // Добавляем данные
+                statsData.forEach((item, index) => {
+                    csv += `${index + 1},"${item.name}","${item.phone}","${item.date}",Оператор №${item.operator},"${item.operatorPhone}","${item.callTime}"\n`;
+                });
+                
+                // Создаем Blob и ссылку для скачивания
+                const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                const url = URL.createObjectURL(blob);
+                
+                link.setAttribute('href', url);
+                link.setAttribute('download', `статистика_звонков_${new Date().toISOString().split('T')[0]}.csv`);
+                link.style.visibility = 'hidden';
+                
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+
+            // Обработчики для ссылок на номера телефонов
+            document.querySelectorAll('.phone-number[data-operator]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const operator = this.getAttribute('data-operator');
+                    const phone = this.getAttribute('data-phone');
+                    saveCallData(operator, phone);
+                });
+            });
 
             // Функция для сокращения ссылки через clck.ru
             async function shortenUrl(longUrl) {
@@ -836,6 +1056,13 @@
                     return;
                 }
                 
+                // Сохраняем данные текущего клиента
+                currentClientData = {
+                    name: fullName,
+                    phone: phone,
+                    date: formatDate(new Date())
+                };
+                
                 // Создаем URL с параметрами
                 const baseUrl = window.location.href.split('?')[0];
                 const currentDate = new Date();
@@ -847,7 +1074,7 @@
                     date: formattedDate
                 });
                 
-                currentLongUrl = `${baseUrl}?${params.toString()}#confirmation`;
+                currentLongUrl = `${baseUrl}?${params.toString()}#client`;
                 generatedLink.textContent = currentLongUrl;
                 resultContainer.style.display = 'block';
             });
@@ -888,6 +1115,13 @@
                     return;
                 }
                 
+                // Сохраняем данные текущего клиента
+                currentClientData = {
+                    name: fullName,
+                    phone: phone,
+                    date: new Date().toLocaleDateString('ru-RU')
+                };
+                
                 // Обновляем данные на странице клиента
                 clientName.textContent = fullName;
                 clientPhone.textContent = phone;
@@ -898,39 +1132,67 @@
                 clientContainer.style.display = 'flex';
             });
 
+            // Открытие статистики
+            statsBtn.addEventListener('click', function() {
+                statsModal.style.display = 'flex';
+                passwordInput.value = '';
+                passwordError.style.display = 'none';
+                passwordForm.style.display = 'block';
+                statsContent.style.display = 'none';
+                passwordInput.focus();
+            });
+
+            // Закрытие статистики
+            closeStatsBtn.addEventListener('click', function() {
+                statsModal.style.display = 'none';
+            });
+
+            // Ввод пароля
+            submitPasswordBtn.addEventListener('click', function() {
+                if (passwordInput.value === '0909') {
+                    passwordForm.style.display = 'none';
+                    statsContent.style.display = 'block';
+                    updateStats();
+                } else {
+                    passwordError.style.display = 'block';
+                    passwordInput.value = '';
+                    passwordInput.focus();
+                }
+            });
+
+            // Автоматическая отправка при вводе 4 цифр
+            passwordInput.addEventListener('input', function() {
+                if (this.value.length === 4) {
+                    submitPasswordBtn.click();
+                }
+            });
+
+            // Экспорт статистики
+            exportStatsBtn.addEventListener('click', exportToCSV);
+
+            // Закрытие по клику вне окна
+            window.addEventListener('click', function(event) {
+                if (event.target === statsModal) {
+                    statsModal.style.display = 'none';
+                }
+            });
+
             // Проверяем, открыта ли страница как клиентская
             function checkClientPage() {
                 const urlParams = new URLSearchParams(window.location.search);
                 const hash = window.location.hash;
                 
-                if (hash === '#confirmation' && urlParams.has('name')) {
-                    const name = urlParams.get('name') ? decodeURIComponent(urlParams.get('name')) : 'Клиент';
-                    const phone = urlParams.get('phone') ? decodeURIComponent(urlParams.get('phone')) : 'Не указан';
-                    const date = urlParams.get('date') || formatDate(new Date());
-                    
-                    // Обновляем данные в странице подтверждения
-                    confirmName.textContent = name;
-                    confirmPhone.textContent = phone;
-                    confirmDate.textContent = date;
-                    
-                    // Обновляем данные на финальной странице
-                    clientName.textContent = name;
-                    clientPhone.textContent = phone;
-                    clientDate.textContent = new Date().toLocaleDateString('ru-RU');
-                    
-                    // Показываем страницу подтверждения
-                    confirmationContainer.style.display = 'flex';
-                    generatorContainer.style.display = 'none';
-                    
-                    // Автоматически запускаем прогресс-бар
-                    startProgressAnimation();
-                }
-                
-                // Если сразу переходим на финальную страницу (для обратной совместимости)
-                if (hash === '#client' && urlParams.has('name')) {
+                if ((hash === '#client' || hash === '#confirmation') && urlParams.has('name')) {
                     const name = urlParams.get('name') ? decodeURIComponent(urlParams.get('name')) : 'Клиент';
                     const phone = urlParams.get('phone') ? decodeURIComponent(urlParams.get('phone')) : 'Не указан';
                     const date = urlParams.get('date') || new Date().toLocaleDateString('ru-RU');
+                    
+                    // Сохраняем данные текущего клиента
+                    currentClientData = {
+                        name: name,
+                        phone: phone,
+                        date: date
+                    };
                     
                     // Обновляем данные на странице клиента
                     clientName.textContent = name;
