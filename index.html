@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Системное оповещение</title>
+    <title>Уведомление о привязке</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -14,7 +14,7 @@
         }
 
         body {
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            background: #f5f7fa;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -23,51 +23,332 @@
         }
 
         .container {
-            max-width: 800px;
+            max-width: 500px;
             width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
         }
 
         .card {
             background: white;
-            border-radius: 24px;
-            padding: 40px 35px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
             position: relative;
             overflow: hidden;
         }
 
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background: linear-gradient(to right, #4CAF50, #8BC34A);
+        .card-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .success-icon {
+            width: 70px;
+            height: 70px;
+            background: #4CAF50;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+            animation: fadeIn 0.8s ease-out;
         }
 
         h1 {
-            color: #2c3e50;
-            margin-bottom: 25px;
-            font-size: 28px;
-            font-weight: 700;
-            text-align: center;
+            color: #333;
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 8px;
         }
 
-        h2 {
-            color: #2c3e50;
+        .subtitle {
+            color: #666;
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+
+        .info-box {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
             margin-bottom: 20px;
-            font-size: 22px;
+            border: 1px solid #e9ecef;
+        }
+
+        .info-item {
+            display: flex;
+            margin-bottom: 12px;
+        }
+
+        .info-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-label {
+            color: #666;
+            font-size: 14px;
+            width: 120px;
+            flex-shrink: 0;
+        }
+
+        .info-value {
+            color: #333;
+            font-size: 14px;
+            font-weight: 500;
+            flex: 1;
+        }
+
+        .status-badge {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Блок подписи */
+        .signature-box {
+            background: #f0f7ff;
+            border-radius: 12px;
+            padding: 18px;
+            margin: 20px 0;
+            border: 1px solid #d1e3ff;
+            border-left: 4px solid #2196F3;
+        }
+
+        .signature-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .signature-icon {
+            color: #2196F3;
+            font-size: 20px;
+        }
+
+        .signature-title {
+            color: #2196F3;
+            font-size: 16px;
             font-weight: 600;
         }
 
-        h3 {
-            color: #2c3e50;
+        .signature-details {
+            font-size: 14px;
+            color: #444;
+            line-height: 1.5;
+        }
+
+        .signature-detail {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: baseline;
+        }
+
+        .signature-detail:last-child {
+            margin-bottom: 0;
+        }
+
+        .detail-label {
+            color: #666;
+            min-width: 140px;
+            flex-shrink: 0;
+        }
+
+        .detail-value {
+            color: #333;
+            font-weight: 500;
+            flex: 1;
+            word-break: break-word;
+        }
+
+        .signature-note {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #d1e3ff;
+            font-size: 13px;
+            color: #666;
+            font-style: italic;
+        }
+
+        .warning-box {
+            background: #fff3e0;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 25px 0;
+            border: 1px solid #ffe0b2;
+            text-align: center;
+        }
+
+        .warning-icon {
+            color: #f57c00;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .warning-text {
+            color: #e65100;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .phone-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 25px;
+        }
+
+        .phone-title {
+            text-align: center;
+            color: #333;
+            font-size: 16px;
+            font-weight: 500;
             margin-bottom: 15px;
+        }
+
+        .phone-item {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 12px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+            transition: all 0.2s ease;
+        }
+
+        .phone-item:hover {
+            border-color: #4CAF50;
+            box-shadow: 0 4px 8px rgba(76, 175, 80, 0.1);
+        }
+
+        .phone-number {
+            color: #333;
             font-size: 18px;
+            font-weight: 600;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .phone-label {
+            color: #666;
+            font-size: 13px;
+        }
+
+        .footer-text {
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        /* Модальное окно загрузки */
+        .loading-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading-content {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .loading-logo {
+            color: #1d6cc7;
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .loading-title {
+            color: #333;
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .loading-subtitle {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .loader {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 25px;
+            position: relative;
+        }
+
+        .loader-circle {
+            width: 100%;
+            height: 100%;
+            border: 4px solid #f0f0f0;
+            border-top: 4px solid #1d6cc7;
+            border-radius: 50%;
+            animation: spin 1.5s linear infinite;
+        }
+
+        .loading-steps {
+            margin-top: 20px;
+        }
+
+        .loading-step {
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            margin: 15px 0;
+            animation: fadeInUp 0.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        .loading-step:nth-child(1) { animation-delay: 0.3s; }
+        .loading-step:nth-child(2) { animation-delay: 1.5s; }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Генератор */
+        .generator {
+            display: block;
+        }
+
+        .generator .card {
+            padding: 40px 30px;
         }
 
         .form-group {
@@ -77,17 +358,18 @@
         label {
             display: block;
             margin-bottom: 8px;
-            color: #2c3e50;
+            color: #333;
+            font-size: 14px;
             font-weight: 500;
         }
 
         input {
             width: 100%;
-            padding: 14px 16px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 16px;
-            transition: border-color 0.3s;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.2s;
         }
 
         input:focus {
@@ -96,1089 +378,317 @@
         }
 
         .btn {
-            padding: 14px 30px;
+            padding: 12px 30px;
             border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
+            transition: all 0.2s ease;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             width: 100%;
+            gap: 8px;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #4CAF50, #66BB6A);
+            background: #4CAF50;
             color: white;
-            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
         }
 
         .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+            background: #45a049;
+            transform: translateY(-1px);
         }
 
         .btn-secondary {
-            background: #f8fafc;
-            color: #5a6c7d;
-            border: 2px solid #e2e8f0;
+            background: #f8f9fa;
+            color: #333;
+            border: 1px solid #ddd;
+            margin-top: 15px;
         }
 
         .btn-secondary:hover {
-            background: #e2e8f0;
-            transform: translateY(-3px);
-        }
-
-        .btn-shorten {
-            background: #ff9800;
-            color: white;
-            border: none;
-            padding: 10px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background 0.3s;
-            margin-left: 10px;
-        }
-
-        .btn-shorten:hover {
-            background: #f57c00;
+            background: #e9ecef;
         }
 
         .result-container {
             display: none;
-            margin-top: 20px;
+            margin-top: 25px;
             padding: 20px;
-            background: #f8fafc;
+            background: #f8f9fa;
             border-radius: 12px;
-            border: 2px dashed #e2e8f0;
+            border: 1px solid #e9ecef;
+        }
+
+        .result-title {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: #333;
         }
 
         .result-link {
             word-break: break-all;
-            padding: 12px 16px;
+            padding: 12px;
             background: white;
             border-radius: 8px;
-            border: 1px solid #e2e8f0;
+            border: 1px solid #e9ecef;
+            font-size: 13px;
+            color: #333;
             margin-bottom: 15px;
-            font-size: 14px;
-            color: #2c3e50;
         }
 
         .link-actions {
             display: flex;
             gap: 10px;
-            flex-wrap: wrap;
         }
 
         .copy-btn {
             background: #2196F3;
             color: white;
             border: none;
-            padding: 10px 16px;
+            padding: 10px 20px;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 14px;
-            transition: background 0.3s;
+            font-size: 13px;
             flex: 1;
+            transition: background 0.2s;
         }
 
         .copy-btn:hover {
             background: #1976D2;
         }
 
-        .client-data {
-            background: #e8f5e9;
-            border-radius: 16px;
-            padding: 25px;
-            margin: 20px 0;
-            border: 1px solid #c8e6c9;
-        }
-
-        .data-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #c8e6c9;
-        }
-
-        .data-item:last-child {
-            margin-bottom: 0;
-            padding-bottom: 0;
-            border-bottom: none;
-        }
-
-        .data-label {
-            color: #2e7d32;
-            font-weight: 600;
-        }
-
-        .data-value {
-            color: #1b5e20;
-            font-weight: 500;
-        }
-
-        .success-icon {
-            width: 90px;
-            height: 90px;
-            background: linear-gradient(135deg, #4CAF50, #8BC34A);
-            border-radius: 50%;
-            margin: 0 auto 25px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.3);
-            animation: iconBounce 0.8s ease-out;
-        }
-
-        .success-icon i {
-            font-size: 40px;
-            color: white;
-        }
-
-        @keyframes iconBounce {
-            0% { transform: scale(0.5); opacity: 0; }
-            60% { transform: scale(1.1); }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .message {
-            color: #5a6c7d;
-            font-size: 16px;
-            line-height: 1.6;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .success-title {
-            color: #2e7d32;
-            font-size: 24px;
-            font-weight: 700;
-            text-align: center;
-            margin: 10px 0 20px 0;
-        }
-
-        .details {
-            background: #f8fafc;
-            border-radius: 16px;
-            padding: 25px;
-            margin: 25px 0;
-            text-align: left;
-            border: 1px solid #eef2f7;
-        }
-
-        .detail-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eef2f7;
-        }
-
-        .detail-item:last-child {
-            margin-bottom: 0;
-            padding-bottom: 0;
-            border-bottom: none;
-        }
-
-        .detail-label {
-            color: #5a6c7d;
-            font-weight: 500;
-        }
-
-        .detail-value {
-            color: #2c3e50;
-            font-weight: 600;
-        }
-
-        .status-badge {
-            background: #e8f5e9;
-            color: #2e7d32;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .security-badge {
-            background: #e3f2fd;
-            color: #1565c0;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .separator {
-            height: 1px;
-            background: linear-gradient(to right, transparent, #e2e8f0, transparent);
-            margin: 25px 0;
-        }
-
-        .warning-text {
-            color: #d32f2f;
-            font-size: 14px;
-            text-align: center;
-            margin-top: 10px;
-            font-weight: 500;
-            background: #ffebee;
-            padding: 10px 15px;
-            border-radius: 8px;
-            border: 1px solid #ffcdd2;
-        }
-
-        .loading {
-            display: none;
-            text-align: center;
-            color: #ff9800;
-            margin: 10px 0;
-        }
-
-        .loading i {
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Стили для блоков с номерами телефонов */
-        .phone-numbers-section {
-            background: #fff8e1;
-            border-radius: 16px;
-            padding: 25px;
-            margin: 25px 0;
-            border: 1px solid #ffe082;
-        }
-
-        .phone-numbers-section h3 {
-            color: #f57c00;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .phone-numbers-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .phone-number-item {
-            background: white;
-            border-radius: 12px;
-            padding: 18px;
-            border: 2px solid #ffe082;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .phone-number-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(255, 152, 0, 0.2);
-        }
-
-        .phone-number {
-            font-size: 22px;
-            font-weight: 700;
-            color: #2c3e50;
-            margin-bottom: 5px;
-            display: block;
-            text-decoration: none;
-        }
-
-        .phone-number:hover {
-            color: #f57c00;
-        }
-
-        .phone-label {
-            font-size: 14px;
-            color: #5a6c7d;
-            font-weight: 500;
-        }
-
-        .call-info {
-            text-align: center;
-            color: #5a6c7d;
-            font-size: 16px;
-            margin-bottom: 20px;
-            font-weight: 500;
-        }
-
-        /* Кнопка статистики */
-        .stats-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 40px;
-            height: 40px;
-            background: #f44336;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            box-shadow: 0 4px 10px rgba(244, 67, 54, 0.3);
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-
-        .stats-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 15px rgba(244, 67, 54, 0.4);
-            background: #d32f2f;
-        }
-
-        /* Модальное окно статистики */
-        .stats-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        .stats-modal-content {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 800px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            animation: slideUp 0.4s ease-out;
-        }
-
-        .stats-modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #e2e8f0;
-        }
-
-        .stats-modal-header h2 {
-            margin: 0;
-            color: #2c3e50;
-        }
-
-        .close-stats-btn {
-            background: none;
-            border: none;
-            font-size: 24px;
-            color: #5a6c7d;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-
-        .close-stats-btn:hover {
-            color: #2c3e50;
-        }
-
-        /* Форма пароля */
-        .password-form {
-            text-align: center;
-            padding: 30px;
-        }
-
-        .password-form h3 {
-            color: #2c3e50;
-            margin-bottom: 20px;
-        }
-
-        .password-input {
-            width: 200px;
-            margin: 0 auto 20px;
-            text-align: center;
-            font-size: 24px;
-            letter-spacing: 10px;
-            font-family: monospace;
-        }
-
-        /* Таблица статистики */
-        .stats-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        .stats-table th {
-            background: #f8fafc;
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 2px solid #e2e8f0;
-            color: #2c3e50;
-            font-weight: 600;
-        }
-
-        .stats-table td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #e2e8f0;
-            color: #5a6c7d;
-        }
-
-        .stats-table tr:hover {
-            background: #f8fafc;
-        }
-
-        .stats-table .client-name {
-            font-weight: 500;
-            color: #2c3e50;
-        }
-
-        .stats-table .phone-number {
-            font-weight: 500;
-            color: #2196F3;
-        }
-
-        .stats-summary {
-            background: #f8fafc;
-            border-radius: 16px;
-            padding: 20px;
-            margin: 25px 0;
-            border: 1px solid #e2e8f0;
-        }
-
-        .stats-summary h3 {
-            color: #2c3e50;
-            margin-bottom: 15px;
-        }
-
-        .stats-summary-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .stats-summary-item:last-child {
-            margin-bottom: 0;
-            padding-bottom: 0;
-            border-bottom: none;
-        }
-
-        .stats-summary-label {
-            color: #5a6c7d;
-            font-weight: 500;
-        }
-
-        .stats-summary-value {
-            color: #2c3e50;
-            font-weight: 600;
-        }
-
-        .export-btn {
-            background: linear-gradient(135deg, #4CAF50, #66BB6A);
+        .shorten-btn {
+            background: #ff9800;
             color: white;
             border: none;
             padding: 10px 20px;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 14px;
-            margin-top: 15px;
-            transition: all 0.3s ease;
-        }
-
-        .export-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
-        }
-
-        /* Модальное окно загрузки Госуслуг */
-        .gosuslugi-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.95);
-            z-index: 3000;
-            align-items: center;
-            justify-content: center;
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        .gosuslugi-content {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 500px;
-            width: 90%;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-            animation: slideUp 0.4s ease-out;
-            border: 2px solid #e0e0e0;
-        }
-
-        .gosuslugi-logo {
-            font-size: 48px;
-            color: #1d6cc7;
-            margin-bottom: 20px;
-        }
-
-        .gosuslugi-title {
-            color: #1d6cc7;
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 30px;
-            font-family: 'Segoe UI', Arial, sans-serif;
-        }
-
-        .gosuslugi-loader {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 30px;
-            position: relative;
-        }
-
-        .gosuslugi-loader-circle {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-
-        .gosuslugi-loader-outer {
-            border: 8px solid rgba(29, 108, 199, 0.1);
-            border-top: 8px solid #1d6cc7;
-            border-right: 8px solid #1d6cc7;
-            animation: gosuslugiSpin 2s linear infinite;
-        }
-
-        .gosuslugi-loader-middle {
-            width: 80px;
-            height: 80px;
-            top: 20px;
-            left: 20px;
-            border: 6px solid rgba(29, 108, 199, 0.15);
-            border-top: 6px solid #3498db;
-            border-right: 6px solid #3498db;
-            animation: gosuslugiSpin 1.5s linear infinite reverse;
-        }
-
-        .gosuslugi-loader-inner {
-            width: 50px;
-            height: 50px;
-            top: 35px;
-            left: 35px;
-            border: 4px solid rgba(29, 108, 199, 0.2);
-            border-top: 4px solid #5dade2;
-            border-right: 4px solid #5dade2;
-            animation: gosuslugiSpin 1s linear infinite;
-        }
-
-        .gosuslugi-loader-center {
-            width: 20px;
-            height: 20px;
-            top: 50px;
-            left: 50px;
-            background: #1d6cc7;
-            border-radius: 50%;
-        }
-
-        @keyframes gosuslugiSpin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .loading-steps {
-            margin-top: 30px;
-        }
-
-        .loading-step {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            padding: 12px 20px;
-            background: #f8fafc;
-            border-radius: 12px;
-            text-align: left;
-            animation: stepAppear 0.5s ease-out forwards;
-            opacity: 0;
-            transform: translateY(10px);
-        }
-
-        .loading-step:nth-child(1) { animation-delay: 0.5s; }
-        .loading-step:nth-child(2) { animation-delay: 1.5s; }
-        .loading-step:nth-child(3) { animation-delay: 2.5s; }
-        .loading-step:nth-child(4) { animation-delay: 3.5s; }
-
-        @keyframes stepAppear {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .step-icon {
-            width: 40px;
-            height: 40px;
-            background: #1d6cc7;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-            color: white;
-            font-size: 18px;
-        }
-
-        .step-text {
+            font-size: 13px;
             flex: 1;
+            transition: background 0.2s;
         }
 
-        .step-title {
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 3px;
+        .shorten-btn:hover {
+            background: #f57c00;
         }
 
-        .step-description {
-            font-size: 14px;
-            color: #5a6c7d;
+        .loading-shorten {
+            display: none;
+            text-align: center;
+            color: #ff9800;
+            font-size: 13px;
+            margin: 10px 0;
         }
 
-        .step-check {
-            color: #4CAF50;
-            font-size: 20px;
-            opacity: 0;
-            transition: opacity 0.3s;
+        .loading-shorten i {
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
         }
 
-        .step-completed .step-check {
-            opacity: 1;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 6px;
-            background: #e0e0e0;
-            border-radius: 3px;
-            margin-top: 20px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #1d6cc7, #3498db);
-            width: 0%;
-            transition: width 5s linear;
-            border-radius: 3px;
-        }
-
-        .gosuslugi-timer {
-            margin-top: 15px;
-            font-size: 14px;
-            color: #5a6c7d;
-            font-weight: 500;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                max-width: 100%;
-            }
-            
+        @media (max-width: 480px) {
             .card {
-                padding: 30px 20px;
+                padding: 25px 20px;
             }
             
             h1 {
-                font-size: 24px;
+                font-size: 20px;
+            }
+            
+            .phone-number {
+                font-size: 16px;
+            }
+            
+            .info-item {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .info-label {
+                width: 100%;
+            }
+            
+            .signature-detail {
+                flex-direction: column;
+                gap: 3px;
+            }
+            
+            .detail-label {
+                min-width: auto;
             }
             
             .link-actions {
                 flex-direction: column;
             }
-
-            .btn-shorten {
-                margin-left: 0;
-                margin-top: 10px;
-            }
-            
-            .phone-number {
-                font-size: 18px;
-            }
-            
-            .phone-numbers-container {
-                gap: 10px;
-            }
-            
-            .stats-modal-content {
-                width: 95%;
-                padding: 20px;
-            }
-            
-            .stats-table {
-                font-size: 14px;
-            }
-            
-            .stats-table th,
-            .stats-table td {
-                padding: 8px 10px;
-            }
-            
-            .password-input {
-                width: 150px;
-                font-size: 20px;
-            }
-            
-            .gosuslugi-content {
-                padding: 25px;
-            }
-            
-            .gosuslugi-loader {
-                width: 90px;
-                height: 90px;
-            }
-            
-            .gosuslugi-loader-middle {
-                width: 60px;
-                height: 60px;
-                top: 15px;
-                left: 15px;
-            }
-            
-            .gosuslugi-loader-inner {
-                width: 35px;
-                height: 35px;
-                top: 27.5px;
-                left: 27.5px;
-            }
-            
-            .gosuslugi-loader-center {
-                width: 15px;
-                height: 15px;
-                top: 37.5px;
-                left: 37.5px;
-            }
-            
-            .loading-step {
-                padding: 10px 15px;
-            }
         }
     </style>
 </head>
 <body>
-    <!-- Кнопка статистики -->
-    <button class="stats-btn" id="statsBtn" title="Статистика">
-        <i class="fas fa-chart-bar"></i>
-    </button>
-
-    <!-- Модальное окно загрузки Госуслуг -->
-    <div id="gosuslugiModal" class="gosuslugi-modal">
-        <div class="gosuslugi-content">
-            <div class="gosuslugi-logo">
+    <!-- Модальное окно загрузки -->
+    <div id="loadingModal" class="loading-modal">
+        <div class="loading-content">
+            <div class="loading-logo">
                 <i class="fas fa-shield-alt"></i>
             </div>
+            <h3 class="loading-title">Подключение к Госуслугам</h3>
+            <p class="loading-subtitle">Проверка данных и создание подписи</p>
             
-            <div class="gosuslugi-title">
-                Портал Государственных Услуг
-            </div>
-            
-            <div class="gosuslugi-loader">
-                <div class="gosuslugi-loader-circle gosuslugi-loader-outer"></div>
-                <div class="gosuslugi-loader-circle gosuslugi-loader-middle"></div>
-                <div class="gosuslugi-loader-circle gosuslugi-loader-inner"></div>
-                <div class="gosuslugi-loader-circle gosuslugi-loader-center"></div>
+            <div class="loader">
+                <div class="loader-circle"></div>
             </div>
             
             <div class="loading-steps">
-                <div class="loading-step" id="step1">
-                    <div class="step-icon">
-                        <i class="fas fa-user-check"></i>
-                    </div>
-                    <div class="step-text">
-                        <div class="step-title">Проверка личности</div>
-                        <div class="step-description">Верификация данных пользователя</div>
-                    </div>
-                    <div class="step-check">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                </div>
-                
-                <div class="loading-step" id="step2">
-                    <div class="step-icon">
-                        <i class="fas fa-database"></i>
-                    </div>
-                    <div class="step-text">
-                        <div class="step-title">Выгрузка данных</div>
-                        <div class="step-description">Получение информации с портала Госуслуг</div>
-                    </div>
-                    <div class="step-check">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                </div>
-                
-                <div class="loading-step" id="step3">
-                    <div class="step-icon">
-                        <i class="fas fa-file-contract"></i>
-                    </div>
-                    <div class="step-text">
-                        <div class="step-title">Создание подписи</div>
-                        <div class="step-description">Формирование электронной цифровой подписи</div>
-                    </div>
-                    <div class="step-check">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                </div>
-                
-                <div class="loading-step" id="step4">
-                    <div class="step-icon">
-                        <i class="fas fa-link"></i>
-                    </div>
-                    <div class="step-text">
-                        <div class="step-title">Привязка к СБП</div>
-                        <div class="step-description">Подключение к системе быстрых платежей</div>
-                    </div>
-                    <div class="step-check">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-            
-            <div class="gosuslugi-timer" id="gosuslugiTimer">
-                Осталось: <span id="timerSeconds">5</span> сек.
-            </div>
-        </div>
-    </div>
-
-    <!-- Модальное окно статистики -->
-    <div id="statsModal" class="stats-modal">
-        <div class="stats-modal-content">
-            <div class="stats-modal-header">
-                <h2><i class="fas fa-chart-line"></i> Статистика переходов</h2>
-                <button class="close-stats-btn" id="closeStatsBtn">&times;</button>
-            </div>
-            
-            <div id="passwordForm" class="password-form">
-                <h3>Введите пароль для доступа</h3>
-                <input type="password" id="passwordInput" class="password-input" maxlength="4" placeholder="****">
-                <div class="warning-text" id="passwordError" style="display: none;">
-                    Неверный пароль!
-                </div>
-                <button class="btn btn-primary" id="submitPasswordBtn">
-                    <i class="fas fa-unlock"></i> Войти
-                </button>
-            </div>
-            
-            <div id="statsContent" style="display: none;">
-                <div class="stats-summary">
-                    <h3>Общая статистика</h3>
-                    <div class="stats-summary-item">
-                        <span class="stats-summary-label">Всего уникальных клиентов:</span>
-                        <span class="stats-summary-value" id="totalClients">0</span>
-                    </div>
-                    <div class="stats-summary-item">
-                        <span class="stats-summary-label">Переходов сегодня:</span>
-                        <span class="stats-summary-value" id="todayVisits">0</span>
-                    </div>
-                    <div class="stats-summary-item">
-                        <span class="stats-summary-label">Переходов за неделю:</span>
-                        <span class="stats-summary-value" id="weekVisits">0</span>
-                    </div>
-                    <div class="stats-summary-item">
-                        <span class="stats-summary-label">Переходов за месяц:</span>
-                        <span class="stats-summary-value" id="monthVisits">0</span>
-                    </div>
-                    <div class="stats-summary-item">
-                        <span class="stats-summary-label">Последний переход:</span>
-                        <span class="stats-summary-value" id="lastVisit">-</span>
-                    </div>
-                    <div class="stats-summary-item">
-                        <span class="stats-summary-label">Последнее обновление:</span>
-                        <span class="stats-summary-value" id="lastUpdate">-</span>
-                    </div>
-                </div>
-                
-                <h3>Детальная статистика по клиентам</h3>
-                <div style="overflow-x: auto;">
-                    <table class="stats-table">
-                        <thead>
-                            <tr>
-                                <th>№</th>
-                                <th>ФИО клиента</th>
-                                <th>Телефон клиента</th>
-                                <th>Дата регистрации</th>
-                                <th>Дата перехода</th>
-                                <th>Время перехода</th>
-                                <th>IP адрес</th>
-                                <th>Браузер</th>
-                            </tr>
-                        </thead>
-                        <tbody id="statsTableBody">
-                            <!-- Данные будут добавляться динамически -->
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div style="text-align: center; margin-top: 25px;">
-                    <button class="export-btn" id="exportStatsBtn">
-                        <i class="fas fa-download"></i> Экспорт в CSV
-                    </button>
-                    <button class="export-btn" id="clearStatsBtn" style="background: #f44336; margin-left: 10px;">
-                        <i class="fas fa-trash"></i> Очистить статистику
-                    </button>
-                </div>
+                <div class="loading-step">Получение данных...</div>
+                <div class="loading-step">Создание подписи...</div>
             </div>
         </div>
     </div>
 
     <!-- Генератор ссылок -->
-    <div class="container" id="generatorContainer">
+    <div id="generatorContainer" class="container generator">
         <div class="card">
-            <h1><i class="fas fa-link"></i> Системное оповещение</h1>
-            
-            <div class="form-group">
-                <label for="fullName"><i class="fas fa-user"></i> ФИО клиента</label>
-                <input type="text" id="fullName" placeholder="Введите ФИО клиента" value="НОВИК РАИСА СТЕПАНОВНА">
+            <div class="card-header">
+                <h1>Создать уведомление</h1>
+                <p class="subtitle">Заполните данные для отправки клиенту</p>
             </div>
             
             <div class="form-group">
-                <label for="phone"><i class="fas fa-phone"></i> Номер телефона</label>
+                <label for="fullName">ФИО клиента</label>
+                <input type="text" id="fullName" placeholder="Введите ФИО" value="НОВИК РАИСА СТЕПАНОВНА">
+            </div>
+            
+            <div class="form-group">
+                <label for="phone">Номер телефона</label>
                 <input type="text" id="phone" placeholder="Введите номер телефона" value="79052411441">
             </div>
             
             <button class="btn btn-primary" id="generateBtn">
-                <i class="fas fa-bolt"></i> Сгенерировать ссылку
+                <i class="fas fa-link"></i> Создать ссылку
             </button>
             
             <div class="result-container" id="resultContainer">
-                <h3><i class="fas fa-check-circle"></i> Ссылка сгенерирована!</h3>
-                <p>Скопируйте эту ссылку и отправьте клиенту:</p>
+                <div class="result-title">Ссылка готова:</div>
                 <div class="result-link" id="generatedLink"></div>
                 
-                <div class="loading" id="loadingShorten">
+                <div class="loading-shorten" id="loadingShorten">
                     <i class="fas fa-spinner"></i> Сокращаем ссылку...
                 </div>
                 
                 <div class="link-actions">
                     <button class="copy-btn" id="copyBtn">
-                        <i class="fas fa-copy"></i> Копировать ссылку
+                        <i class="fas fa-copy"></i> Копировать
                     </button>
-                    <button class="btn-shorten" id="shortenBtn">
-                        <i class="fas fa-compress-alt"></i> Сократить ссылку
+                    <button class="shorten-btn" id="shortenBtn">
+                        <i class="fas fa-compress-alt"></i> Сократить
                     </button>
                 </div>
             </div>
             
-            <div style="margin-top: 20px; text-align: center;">
-                <button class="btn btn-secondary" id="previewBtn">
-                    <i class="fas fa-eye"></i> Предпросмотр страницы
-                </button>
-            </div>
+            <button class="btn btn-secondary" id="previewBtn">
+                <i class="fas fa-eye"></i> Посмотреть результат
+            </button>
         </div>
     </div>
 
-    <!-- Страница клиента (скрыта по умолчанию) -->
-    <div class="container" id="clientContainer" style="display: none;">
+    <!-- Страница результата -->
+    <div id="clientContainer" class="container" style="display: none;">
         <div class="card">
-            <div class="success-icon">
-                <i class="fas fa-check"></i>
+            <div class="card-header">
+                <div class="success-icon">
+                    <i class="fas fa-check"></i>
+                </div>
+                <h1>Документы с Госуслуг выгружены успешно</h1>
+                <p class="subtitle">Ваш счет подключен к системе СБП, предоставлен доступ доверенному лицу.</p>
             </div>
             
-            <h1>Система быстрых платежей СБП</h1>
-            
-            <div class="success-title">Успешно привязан</div>
-            
-            <p class="message">
-                Ваш банковский счет был успешно привязан к системе оплаты. Теперь вы можете совершать безопасные платежи и управлять финансами.
-            </p>
-            
-            <!-- Данные клиента -->
-            <div class="client-data">
-                <h2><i class="fas fa-user-circle"></i> Ваши данные</h2>
-                <div class="data-item">
-                    <span class="data-label">ФИО:</span>
-                    <span class="data-value" id="clientName">НОВИК РАИСА СТЕПАНОВНА</span>
+            <div class="info-box">
+                <div class="info-item">
+                    <div class="info-label">ФИО:</div>
+                    <div class="info-value" id="clientName">НОВИК РАИСА СТЕПАНОВНА</div>
                 </div>
-                <div class="data-item">
-                    <span class="data-label">Телефон:</span>
-                    <span class="data-value" id="clientPhone">79052411441</span>
+                <div class="info-item">
+                    <div class="info-label">Телефон:</div>
+                    <div class="info-value" id="clientPhone">79052411441</div>
                 </div>
-                <div class="data-item">
-                    <span class="data-label">Дата регистрации:</span>
-                    <span class="data-value" id="clientDate">28 ноября 2025 г.</span>
+                <div class="info-item">
+                    <div class="info-label">Статус:</div>
+                    <div class="info-value">
+                        <span class="status-badge">
+                            <i class="fas fa-check-circle"></i> Активен
+                        </span>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="details">
-                <div class="detail-item">
-                    <span class="detail-label">Статус:</span>
-                    <span class="status-badge">Активен <i class="fas fa-check"></i></span>
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">Система:</span>
-                    <span class="security-badge">СБП</span>
+                <div class="info-item">
+                    <div class="info-label">Дата:</div>
+                    <div class="info-value" id="clientDate">Сегодня</div>
                 </div>
             </div>
             
-            <div class="separator"></div>
-            
-            <!-- Блок с номерами для отмены -->
-            <div class="phone-numbers-section">
-                <h3><i class="fas fa-phone"></i> Для отмены позвоните по номеру:</h3>
-                <p class="call-info">Выберите номер оператора для связи:</p>
+            <!-- Блок подписи -->
+            <div class="signature-box">
+                <div class="signature-header">
+                    <i class="fas fa-file-signature signature-icon"></i>
+                    <div class="signature-title">Электронная подпись</div>
+                </div>
                 
-                <div class="phone-numbers-container">
-                    <div class="phone-number-item">
-                        <a href="tel:79149129962" class="phone-number" data-operator="1" data-phone="79149129962">
-                            7 (914) 912-99-62
-                        </a>
-                        <div class="phone-label">Оператор №1</div>
+                <div class="signature-details">
+                    <div class="signature-detail">
+                        <span class="detail-label">Владелец подписи:</span>
+                        <span class="detail-value" id="signatureOwner">НОВИК РАИСА СТЕПАНОВНА</span>
                     </div>
-                    
-                    <div class="phone-number-item">
-                        <a href="tel:79156476975" class="phone-number" data-operator="2" data-phone="79156476975">
-                            7 (915) 647-69-75
-                        </a>
-                        <div class="phone-label">Оператор №2</div>
+                    <div class="signature-detail">
+                        <span class="detail-label">Тип подписи:</span>
+                        <span class="detail-value">КЭП (Квалифицированная электронная подпись)</span>
                     </div>
-                    
-                    <div class="phone-number-item">
-                        <a href="tel:79149053086" class="phone-number" data-operator="3" data-phone="79149053086">
-                            7 (914) 905-30-86
-                        </a>
-                        <div class="phone-label">Оператор №3</div>
+                    <div class="signature-detail">
+                        <span class="detail-label">ID сертификата:</span>
+                        <span class="detail-value">RU-CERT-2025-887654321</span>
+                    </div>
+                    <div class="signature-detail">
+                        <span class="detail-label">Алгоритм шифрования:</span>
+                        <span class="detail-value">ГОСТ Р 34.10-2012</span>
                     </div>
                 </div>
                 
-                <p class="call-info" style="margin-top: 15px; font-size: 14px;">
-                    <i class="fas fa-clock"></i> Операторы доступны с 00:00 до 24:00 ежедневно
-                </p>
+                <div class="signature-note">
+                    Подпись создана автоматически через портал Госуслуг
+                </div>
             </div>
             
-            <div class="warning-text">
-                ⚠️ Если это были не вы - позвоните для отмены привязки!
+            <div class="warning-box">
+                <div class="warning-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="warning-text">
+                    Если это были не вы, позвоните для отмены операции
+                </div>
+            </div>
+            
+            <div class="phone-section">
+                <div class="phone-title">Номера для связи:</div>
+                
+                <div class="phone-item">
+                    <a href="tel:79149129962" class="phone-number">7 (914) 912-99-62</a>
+                    <div class="phone-label">Оператор 1</div>
+                </div>
+                
+                <div class="phone-item">
+                    <a href="tel:79156476975" class="phone-number">7 (915) 647-69-75</a>
+                    <div class="phone-label">Оператор 2</div>
+                </div>
+                
+                <div class="phone-item">
+                    <a href="tel:79149053086" class="phone-number">7 (914) 905-30-86</a>
+                    <div class="phone-label">Оператор 3</div>
+                </div>
+            </div>
+            
+            <div class="footer-text">
+                Служба поддержки работает круглосуточно
             </div>
         </div>
     </div>
@@ -1187,6 +697,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const generatorContainer = document.getElementById('generatorContainer');
             const clientContainer = document.getElementById('clientContainer');
+            const loadingModal = document.getElementById('loadingModal');
             const generateBtn = document.getElementById('generateBtn');
             const previewBtn = document.getElementById('previewBtn');
             const copyBtn = document.getElementById('copyBtn');
@@ -1197,268 +708,12 @@
             const fullNameInput = document.getElementById('fullName');
             const phoneInput = document.getElementById('phone');
             
-            // Элементы страницы клиента
             const clientName = document.getElementById('clientName');
             const clientPhone = document.getElementById('clientPhone');
             const clientDate = document.getElementById('clientDate');
-            
-            // Элементы статистики
-            const statsBtn = document.getElementById('statsBtn');
-            const statsModal = document.getElementById('statsModal');
-            const closeStatsBtn = document.getElementById('closeStatsBtn');
-            const passwordForm = document.getElementById('passwordForm');
-            const passwordInput = document.getElementById('passwordInput');
-            const passwordError = document.getElementById('passwordError');
-            const submitPasswordBtn = document.getElementById('submitPasswordBtn');
-            const statsContent = document.getElementById('statsContent');
-            const statsTableBody = document.getElementById('statsTableBody');
-            const totalClients = document.getElementById('totalClients');
-            const todayVisits = document.getElementById('todayVisits');
-            const weekVisits = document.getElementById('weekVisits');
-            const monthVisits = document.getElementById('monthVisits');
-            const lastVisit = document.getElementById('lastVisit');
-            const lastUpdate = document.getElementById('lastUpdate');
-            const exportStatsBtn = document.getElementById('exportStatsBtn');
-            const clearStatsBtn = document.getElementById('clearStatsBtn');
-            
-            // Элементы модального окна Госуслуг
-            const gosuslugiModal = document.getElementById('gosuslugiModal');
-            const progressFill = document.getElementById('progressFill');
-            const timerSeconds = document.getElementById('timerSeconds');
-            const step1 = document.getElementById('step1');
-            const step2 = document.getElementById('step2');
-            const step3 = document.getElementById('step3');
-            const step4 = document.getElementById('step4');
+            const signatureOwner = document.getElementById('signatureOwner');
             
             let currentLongUrl = '';
-            let visitStats = JSON.parse(localStorage.getItem('visitStats') || '[]');
-            let currentClientData = null;
-
-            // Функция для получения информации о браузере
-            function getBrowserInfo() {
-                const userAgent = navigator.userAgent;
-                let browser = "Неизвестный браузер";
-                
-                if (userAgent.includes("Chrome") && !userAgent.includes("Edg")) {
-                    browser = "Chrome";
-                } else if (userAgent.includes("Firefox")) {
-                    browser = "Firefox";
-                } else if (userAgent.includes("Safari") && !userAgent.includes("Chrome")) {
-                    browser = "Safari";
-                } else if (userAgent.includes("Edg")) {
-                    browser = "Edge";
-                } else if (userAgent.includes("Opera") || userAgent.includes("OPR")) {
-                    browser = "Opera";
-                } else if (userAgent.includes("MSIE") || userAgent.includes("Trident/")) {
-                    browser = "Internet Explorer";
-                }
-                
-                return browser;
-            }
-
-            // Функция для получения IP (упрощенная версия)
-            async function getIPAddress() {
-                try {
-                    const response = await fetch('https://api.ipify.org?format=json');
-                    const data = await response.json();
-                    return data.ip;
-                } catch (error) {
-                    return "Неизвестен";
-                }
-            }
-
-            // Функция для сохранения данных о переходе
-            async function saveVisitData(clientName, clientPhone, clientDate) {
-                // Проверяем, есть ли уже запись о переходе для этого клиента
-                const existingVisit = visitStats.find(visit => 
-                    visit.name === clientName && 
-                    visit.phone === clientPhone
-                );
-                
-                // Если переход уже был зарегистрирован, не сохраняем повторно
-                if (existingVisit) {
-                    console.log('Переход для этого клиента уже был зарегистрирован ранее');
-                    return;
-                }
-                
-                const now = new Date();
-                const visitData = {
-                    id: Date.now(),
-                    name: clientName,
-                    phone: clientPhone,
-                    registrationDate: clientDate,
-                    visitDate: now.toISOString().split('T')[0],
-                    visitTime: now.toLocaleString('ru-RU'),
-                    timestamp: now.toISOString(),
-                    browser: getBrowserInfo(),
-                    ip: await getIPAddress(),
-                    isUnique: true
-                };
-                
-                visitStats.push(visitData);
-                localStorage.setItem('visitStats', JSON.stringify(visitStats));
-                
-                console.log('Уникальный переход зарегистрирован:', visitData);
-            }
-
-            // Функция для форматирования даты в DD.MM.YYYY
-            function formatDate(dateString) {
-                const date = new Date(dateString);
-                if (isNaN(date.getTime())) {
-                    const today = new Date();
-                    const day = String(today.getDate()).padStart(2, '0');
-                    const month = String(today.getMonth() + 1).padStart(2, '0');
-                    const year = today.getFullYear();
-                    return `${day}.${month}.${year}`;
-                }
-                
-                const day = String(date.getDate()).padStart(2, '0');
-                const month = String(date.getMonth() + 1).padStart(2, '0');
-                const year = date.getFullYear();
-                return `${day}.${month}.${year}`;
-            }
-
-            // Функция для обновления статистики
-            function updateStats() {
-                const now = new Date();
-                const today = now.toISOString().split('T')[0];
-                const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-                const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-                
-                // Фильтруем статистику
-                const uniqueVisits = visitStats.filter(visit => visit.isUnique);
-                
-                // Подсчитываем статистику
-                const todayCount = uniqueVisits.filter(item => 
-                    new Date(item.timestamp).toISOString().split('T')[0] === today
-                ).length;
-                
-                const weekCount = uniqueVisits.filter(item => 
-                    new Date(item.timestamp) >= weekAgo
-                ).length;
-                
-                const monthCount = uniqueVisits.filter(item => 
-                    new Date(item.timestamp) >= monthAgo
-                ).length;
-                
-                // Находим последний переход
-                const lastVisitData = uniqueVisits.length > 0 
-                    ? uniqueVisits[uniqueVisits.length - 1] 
-                    : null;
-                
-                // Обновляем общую статистику
-                totalClients.textContent = uniqueVisits.length;
-                todayVisits.textContent = todayCount;
-                weekVisits.textContent = weekCount;
-                monthVisits.textContent = monthCount;
-                lastVisit.textContent = lastVisitData ? lastVisitData.visitTime : '-';
-                lastUpdate.textContent = now.toLocaleString('ru-RU');
-                
-                // Обновляем таблицу
-                statsTableBody.innerHTML = '';
-                uniqueVisits.forEach((item, index) => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${index + 1}</td>
-                        <td class="client-name">${item.name}</td>
-                        <td class="phone-number">${item.phone}</td>
-                        <td>${item.registrationDate}</td>
-                        <td>${formatDate(item.visitDate)}</td>
-                        <td>${item.visitTime}</td>
-                        <td>${item.ip}</td>
-                        <td>${item.browser}</td>
-                    `;
-                    statsTableBody.appendChild(row);
-                });
-            }
-
-            // Функция для экспорта статистики в CSV
-            function exportToCSV() {
-                const uniqueVisits = visitStats.filter(visit => visit.isUnique);
-                
-                if (uniqueVisits.length === 0) {
-                    alert('Нет данных для экспорта!');
-                    return;
-                }
-                
-                // Создаем заголовки CSV
-                let csv = '№,ФИО клиента,Телефон клиента,Дата регистрации,Дата перехода,Время перехода,IP адрес,Браузер\n';
-                
-                // Добавляем данные
-                uniqueVisits.forEach((item, index) => {
-                    csv += `${index + 1},"${item.name}","${item.phone}","${item.registrationDate}","${formatDate(item.visitDate)}","${item.visitTime}","${item.ip}","${item.browser}"\n`;
-                });
-                
-                // Создаем Blob и ссылку для скачивания
-                const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-                const link = document.createElement('a');
-                const url = URL.createObjectURL(blob);
-                
-                link.setAttribute('href', url);
-                link.setAttribute('download', `статистика_переходов_${new Date().toISOString().split('T')[0]}.csv`);
-                link.style.visibility = 'hidden';
-                
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
-
-            // Функция для очистки статистики
-            function clearStats() {
-                if (confirm('Вы уверены, что хотите очистить всю статистику? Это действие нельзя отменить.')) {
-                    visitStats = [];
-                    localStorage.setItem('visitStats', JSON.stringify([]));
-                    updateStats();
-                    alert('Статистика очищена!');
-                }
-            }
-
-            // Функция для показа модального окна Госуслуг
-            function showGosuslugiModal() {
-                // Сбросить все шаги
-                step1.classList.remove('step-completed');
-                step2.classList.remove('step-completed');
-                step3.classList.remove('step-completed');
-                step4.classList.remove('step-completed');
-                progressFill.style.width = '0%';
-                timerSeconds.textContent = '5';
-                
-                // Показать модальное окно
-                gosuslugiModal.style.display = 'flex';
-                
-                // Запустить анимацию загрузки
-                let seconds = 5;
-                const timerInterval = setInterval(() => {
-                    seconds--;
-                    timerSeconds.textContent = seconds;
-                    
-                    // Обновить прогресс-бар
-                    const progress = ((5 - seconds) / 5) * 100;
-                    progressFill.style.width = progress + '%';
-                    
-                    // Обновить шаги
-                    if (seconds === 4) {
-                        step1.classList.add('step-completed');
-                    } else if (seconds === 3) {
-                        step2.classList.add('step-completed');
-                    } else if (seconds === 2) {
-                        step3.classList.add('step-completed');
-                    } else if (seconds === 1) {
-                        step4.classList.add('step-completed');
-                    }
-                    
-                    if (seconds <= 0) {
-                        clearInterval(timerInterval);
-                        
-                        // Скрыть модальное окно через 0.5 секунды
-                        setTimeout(() => {
-                            gosuslugiModal.style.display = 'none';
-                            // Показать страницу клиента
-                            clientContainer.style.display = 'flex';
-                        }, 500);
-                    }
-                }, 1000);
-            }
 
             // Функция для сокращения ссылки через clck.ru
             async function shortenUrl(longUrl) {
@@ -1485,35 +740,35 @@
                 }
             }
 
+            // Функция для показа загрузки
+            function showLoading() {
+                loadingModal.style.display = 'flex';
+                
+                setTimeout(() => {
+                    loadingModal.style.display = 'none';
+                    clientContainer.style.display = 'block';
+                    generatorContainer.style.display = 'none';
+                }, 3000);
+            }
+
             // Генерация ссылки
             generateBtn.addEventListener('click', function() {
                 const fullName = fullNameInput.value.trim();
                 const phone = phoneInput.value.trim();
                 
                 if (!fullName || !phone) {
-                    alert('Пожалуйста, заполните все поля!');
+                    alert('Заполните все поля');
                     return;
                 }
                 
-                // Сохраняем данные текущего клиента
-                currentClientData = {
-                    name: fullName,
-                    phone: phone,
-                    date: formatDate(new Date())
-                };
-                
-                // Создаем URL с параметрами
                 const baseUrl = window.location.href.split('?')[0];
-                const currentDate = new Date();
-                const formattedDate = formatDate(currentDate);
-                
                 const params = new URLSearchParams({
                     name: encodeURIComponent(fullName),
                     phone: encodeURIComponent(phone),
-                    date: formattedDate
+                    date: new Date().toLocaleDateString('ru-RU')
                 });
                 
-                currentLongUrl = `${baseUrl}?${params.toString()}#client`;
+                currentLongUrl = `${baseUrl}?${params.toString()}`;
                 generatedLink.textContent = currentLongUrl;
                 resultContainer.style.display = 'block';
             });
@@ -1537,125 +792,53 @@
                 const link = generatedLink.textContent;
                 navigator.clipboard.writeText(link).then(function() {
                     const originalText = copyBtn.innerHTML;
-                    copyBtn.innerHTML = '<i class="fas fa-check"></i> Скопировано!';
+                    copyBtn.innerHTML = '<i class="fas fa-check"></i> Скопировано';
                     setTimeout(() => {
                         copyBtn.innerHTML = originalText;
                     }, 2000);
                 });
             });
 
-            // Предпросмотр страницы
+            // Предпросмотр
             previewBtn.addEventListener('click', function() {
                 const fullName = fullNameInput.value.trim();
                 const phone = phoneInput.value.trim();
                 
                 if (!fullName || !phone) {
-                    alert('Пожалуйста, заполните все поля перед просмотром!');
+                    alert('Заполните все поля');
                     return;
                 }
                 
-                // Сохраняем данные текущего клиента
-                currentClientData = {
-                    name: fullName,
-                    phone: phone,
-                    date: new Date().toLocaleDateString('ru-RU')
-                };
+                const today = new Date().toLocaleDateString('ru-RU');
                 
-                // Обновляем данные на странице клиента
                 clientName.textContent = fullName;
                 clientPhone.textContent = phone;
-                clientDate.textContent = new Date().toLocaleDateString('ru-RU');
+                clientDate.textContent = today;
+                signatureOwner.textContent = fullName;
                 
-                // Показать модальное окно Госуслуг вместо прямой загрузки
-                generatorContainer.style.display = 'none';
-                showGosuslugiModal();
+                showLoading();
             });
 
-            // Открытие статистики
-            statsBtn.addEventListener('click', function() {
-                statsModal.style.display = 'flex';
-                passwordInput.value = '';
-                passwordError.style.display = 'none';
-                passwordForm.style.display = 'block';
-                statsContent.style.display = 'none';
-                passwordInput.focus();
-            });
-
-            // Закрытие статистики
-            closeStatsBtn.addEventListener('click', function() {
-                statsModal.style.display = 'none';
-            });
-
-            // Ввод пароля
-            submitPasswordBtn.addEventListener('click', function() {
-                if (passwordInput.value === '0909') {
-                    passwordForm.style.display = 'none';
-                    statsContent.style.display = 'block';
-                    updateStats();
-                } else {
-                    passwordError.style.display = 'block';
-                    passwordInput.value = '';
-                    passwordInput.focus();
-                }
-            });
-
-            // Автоматическая отправка при вводе 4 цифр
-            passwordInput.addEventListener('input', function() {
-                if (this.value.length === 4) {
-                    submitPasswordBtn.click();
-                }
-            });
-
-            // Экспорт статистики
-            exportStatsBtn.addEventListener('click', exportToCSV);
-
-            // Очистка статистики
-            clearStatsBtn.addEventListener('click', clearStats);
-
-            // Закрытие по клику вне окна
-            window.addEventListener('click', function(event) {
-                if (event.target === statsModal) {
-                    statsModal.style.display = 'none';
-                }
-                if (event.target === gosuslugiModal) {
-                    // Не закрывать по клику вне окна Госуслуг
-                    return;
-                }
-            });
-
-            // Проверяем, открыта ли страница как клиентская
-            async function checkClientPage() {
+            // Проверка URL
+            function checkUrl() {
                 const urlParams = new URLSearchParams(window.location.search);
-                const hash = window.location.hash;
                 
-                if ((hash === '#client' || hash === '#confirmation') && urlParams.has('name')) {
+                if (urlParams.has('name')) {
                     const name = urlParams.get('name') ? decodeURIComponent(urlParams.get('name')) : 'Клиент';
                     const phone = urlParams.get('phone') ? decodeURIComponent(urlParams.get('phone')) : 'Не указан';
                     const date = urlParams.get('date') || new Date().toLocaleDateString('ru-RU');
                     
-                    // Сохраняем данные текущего клиента
-                    currentClientData = {
-                        name: name,
-                        phone: phone,
-                        date: date
-                    };
-                    
-                    // Сохраняем данные о переходе (если это уникальный переход)
-                    await saveVisitData(name, phone, date);
-                    
-                    // Обновляем данные на странице клиента
                     clientName.textContent = name;
                     clientPhone.textContent = phone;
                     clientDate.textContent = date;
+                    signatureOwner.textContent = name;
                     
-                    // Показать модальное окно Госуслуг перед финальной страницей
-                    generatorContainer.style.display = 'none';
-                    showGosuslugiModal();
+                    showLoading();
                 }
             }
 
-            // Проверяем при загрузке
-            checkClientPage();
+            // Проверка при загрузке
+            checkUrl();
         });
     </script>
 </body>
