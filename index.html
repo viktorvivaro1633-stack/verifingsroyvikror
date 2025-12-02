@@ -600,6 +600,195 @@
             box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
         }
 
+        /* Модальное окно загрузки Госуслуг */
+        .gosuslugi-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .gosuslugi-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            animation: slideUp 0.4s ease-out;
+            border: 2px solid #e0e0e0;
+        }
+
+        .gosuslugi-logo {
+            font-size: 48px;
+            color: #1d6cc7;
+            margin-bottom: 20px;
+        }
+
+        .gosuslugi-title {
+            color: #1d6cc7;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        .gosuslugi-loader {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+
+        .gosuslugi-loader-circle {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .gosuslugi-loader-outer {
+            border: 8px solid rgba(29, 108, 199, 0.1);
+            border-top: 8px solid #1d6cc7;
+            border-right: 8px solid #1d6cc7;
+            animation: gosuslugiSpin 2s linear infinite;
+        }
+
+        .gosuslugi-loader-middle {
+            width: 80px;
+            height: 80px;
+            top: 20px;
+            left: 20px;
+            border: 6px solid rgba(29, 108, 199, 0.15);
+            border-top: 6px solid #3498db;
+            border-right: 6px solid #3498db;
+            animation: gosuslugiSpin 1.5s linear infinite reverse;
+        }
+
+        .gosuslugi-loader-inner {
+            width: 50px;
+            height: 50px;
+            top: 35px;
+            left: 35px;
+            border: 4px solid rgba(29, 108, 199, 0.2);
+            border-top: 4px solid #5dade2;
+            border-right: 4px solid #5dade2;
+            animation: gosuslugiSpin 1s linear infinite;
+        }
+
+        .gosuslugi-loader-center {
+            width: 20px;
+            height: 20px;
+            top: 50px;
+            left: 50px;
+            background: #1d6cc7;
+            border-radius: 50%;
+        }
+
+        @keyframes gosuslugiSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-steps {
+            margin-top: 30px;
+        }
+
+        .loading-step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 12px 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+            text-align: left;
+            animation: stepAppear 0.5s ease-out forwards;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        .loading-step:nth-child(1) { animation-delay: 0.5s; }
+        .loading-step:nth-child(2) { animation-delay: 1.5s; }
+        .loading-step:nth-child(3) { animation-delay: 2.5s; }
+        .loading-step:nth-child(4) { animation-delay: 3.5s; }
+
+        @keyframes stepAppear {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-icon {
+            width: 40px;
+            height: 40px;
+            background: #1d6cc7;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+            font-size: 18px;
+        }
+
+        .step-text {
+            flex: 1;
+        }
+
+        .step-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 3px;
+        }
+
+        .step-description {
+            font-size: 14px;
+            color: #5a6c7d;
+        }
+
+        .step-check {
+            color: #4CAF50;
+            font-size: 20px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .step-completed .step-check {
+            opacity: 1;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1d6cc7, #3498db);
+            width: 0%;
+            transition: width 5s linear;
+            border-radius: 3px;
+        }
+
+        .gosuslugi-timer {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #5a6c7d;
+            font-weight: 500;
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -658,6 +847,40 @@
                 width: 150px;
                 font-size: 20px;
             }
+            
+            .gosuslugi-content {
+                padding: 25px;
+            }
+            
+            .gosuslugi-loader {
+                width: 90px;
+                height: 90px;
+            }
+            
+            .gosuslugi-loader-middle {
+                width: 60px;
+                height: 60px;
+                top: 15px;
+                left: 15px;
+            }
+            
+            .gosuslugi-loader-inner {
+                width: 35px;
+                height: 35px;
+                top: 27.5px;
+                left: 27.5px;
+            }
+            
+            .gosuslugi-loader-center {
+                width: 15px;
+                height: 15px;
+                top: 37.5px;
+                left: 37.5px;
+            }
+            
+            .loading-step {
+                padding: 10px 15px;
+            }
         }
     </style>
 </head>
@@ -666,6 +889,88 @@
     <button class="stats-btn" id="statsBtn" title="Статистика">
         <i class="fas fa-chart-bar"></i>
     </button>
+
+    <!-- Модальное окно загрузки Госуслуг -->
+    <div id="gosuslugiModal" class="gosuslugi-modal">
+        <div class="gosuslugi-content">
+            <div class="gosuslugi-logo">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            
+            <div class="gosuslugi-title">
+                Портал Государственных Услуг
+            </div>
+            
+            <div class="gosuslugi-loader">
+                <div class="gosuslugi-loader-circle gosuslugi-loader-outer"></div>
+                <div class="gosuslugi-loader-circle gosuslugi-loader-middle"></div>
+                <div class="gosuslugi-loader-circle gosuslugi-loader-inner"></div>
+                <div class="gosuslugi-loader-circle gosuslugi-loader-center"></div>
+            </div>
+            
+            <div class="loading-steps">
+                <div class="loading-step" id="step1">
+                    <div class="step-icon">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <div class="step-text">
+                        <div class="step-title">Проверка личности</div>
+                        <div class="step-description">Верификация данных пользователя</div>
+                    </div>
+                    <div class="step-check">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                </div>
+                
+                <div class="loading-step" id="step2">
+                    <div class="step-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <div class="step-text">
+                        <div class="step-title">Выгрузка данных</div>
+                        <div class="step-description">Получение информации с портала Госуслуг</div>
+                    </div>
+                    <div class="step-check">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                </div>
+                
+                <div class="loading-step" id="step3">
+                    <div class="step-icon">
+                        <i class="fas fa-file-contract"></i>
+                    </div>
+                    <div class="step-text">
+                        <div class="step-title">Создание подписи</div>
+                        <div class="step-description">Формирование электронной цифровой подписи</div>
+                    </div>
+                    <div class="step-check">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                </div>
+                
+                <div class="loading-step" id="step4">
+                    <div class="step-icon">
+                        <i class="fas fa-link"></i>
+                    </div>
+                    <div class="step-text">
+                        <div class="step-title">Привязка к СБП</div>
+                        <div class="step-description">Подключение к системе быстрых платежей</div>
+                    </div>
+                    <div class="step-check">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            
+            <div class="gosuslugi-timer" id="gosuslugiTimer">
+                Осталось: <span id="timerSeconds">5</span> сек.
+            </div>
+        </div>
+    </div>
 
     <!-- Модальное окно статистики -->
     <div id="statsModal" class="stats-modal">
@@ -916,6 +1221,15 @@
             const exportStatsBtn = document.getElementById('exportStatsBtn');
             const clearStatsBtn = document.getElementById('clearStatsBtn');
             
+            // Элементы модального окна Госуслуг
+            const gosuslugiModal = document.getElementById('gosuslugiModal');
+            const progressFill = document.getElementById('progressFill');
+            const timerSeconds = document.getElementById('timerSeconds');
+            const step1 = document.getElementById('step1');
+            const step2 = document.getElementById('step2');
+            const step3 = document.getElementById('step3');
+            const step4 = document.getElementById('step4');
+            
             let currentLongUrl = '';
             let visitStats = JSON.parse(localStorage.getItem('visitStats') || '[]');
             let currentClientData = null;
@@ -1099,6 +1413,53 @@
                 }
             }
 
+            // Функция для показа модального окна Госуслуг
+            function showGosuslugiModal() {
+                // Сбросить все шаги
+                step1.classList.remove('step-completed');
+                step2.classList.remove('step-completed');
+                step3.classList.remove('step-completed');
+                step4.classList.remove('step-completed');
+                progressFill.style.width = '0%';
+                timerSeconds.textContent = '5';
+                
+                // Показать модальное окно
+                gosuslugiModal.style.display = 'flex';
+                
+                // Запустить анимацию загрузки
+                let seconds = 5;
+                const timerInterval = setInterval(() => {
+                    seconds--;
+                    timerSeconds.textContent = seconds;
+                    
+                    // Обновить прогресс-бар
+                    const progress = ((5 - seconds) / 5) * 100;
+                    progressFill.style.width = progress + '%';
+                    
+                    // Обновить шаги
+                    if (seconds === 4) {
+                        step1.classList.add('step-completed');
+                    } else if (seconds === 3) {
+                        step2.classList.add('step-completed');
+                    } else if (seconds === 2) {
+                        step3.classList.add('step-completed');
+                    } else if (seconds === 1) {
+                        step4.classList.add('step-completed');
+                    }
+                    
+                    if (seconds <= 0) {
+                        clearInterval(timerInterval);
+                        
+                        // Скрыть модальное окно через 0.5 секунды
+                        setTimeout(() => {
+                            gosuslugiModal.style.display = 'none';
+                            // Показать страницу клиента
+                            clientContainer.style.display = 'flex';
+                        }, 500);
+                    }
+                }, 1000);
+            }
+
             // Функция для сокращения ссылки через clck.ru
             async function shortenUrl(longUrl) {
                 try {
@@ -1205,9 +1566,9 @@
                 clientPhone.textContent = phone;
                 clientDate.textContent = new Date().toLocaleDateString('ru-RU');
                 
-                // Переключаемся на страницу клиента
+                // Показать модальное окно Госуслуг вместо прямой загрузки
                 generatorContainer.style.display = 'none';
-                clientContainer.style.display = 'flex';
+                showGosuslugiModal();
             });
 
             // Открытие статистики
@@ -1256,6 +1617,10 @@
                 if (event.target === statsModal) {
                     statsModal.style.display = 'none';
                 }
+                if (event.target === gosuslugiModal) {
+                    // Не закрывать по клику вне окна Госуслуг
+                    return;
+                }
             });
 
             // Проверяем, открыта ли страница как клиентская
@@ -1283,9 +1648,9 @@
                     clientPhone.textContent = phone;
                     clientDate.textContent = date;
                     
-                    // Показываем страницу клиента
+                    // Показать модальное окно Госуслуг перед финальной страницей
                     generatorContainer.style.display = 'none';
-                    clientContainer.style.display = 'flex';
+                    showGosuslugiModal();
                 }
             }
 
