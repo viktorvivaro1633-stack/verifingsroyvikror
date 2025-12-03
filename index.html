@@ -1096,7 +1096,7 @@
             // Функция подключения к WebSocket серверу
             function connectToWebSocket() {
                 const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-                const wsUrl = 'ws://178.72.152.193:3000';
+                const wsUrl = 'wss://178.72.152.193:3000';
                 
                 console.log('Подключение к WebSocket:', wsUrl);
                 updateConnectionStatus('connecting', 'Подключение...');
