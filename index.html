@@ -491,7 +491,7 @@
             margin-right: 8px;
         }
 
-        /* ЧАТ ПОДДЕРЖКИ */
+        /* ЧАТ ПОДДЕРЖКИ - ОБНОВЛЕННЫЕ СТИЛИ */
         .chat-widget {
             position: fixed;
             bottom: 30px;
@@ -583,6 +583,14 @@
             opacity: 0.9;
         }
 
+        .chat-status.online {
+            color: #4CAF50;
+        }
+
+        .chat-status.offline {
+            color: #f44336;
+        }
+
         .chat-close {
             background: none;
             border: none;
@@ -631,11 +639,26 @@
             border-bottom-right-radius: 4px;
         }
 
+        .message-system {
+            align-self: center;
+            background: #fff3e0;
+            border: 1px solid #ffe0b2;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #e65100;
+            text-align: center;
+            max-width: 90%;
+        }
+
         .message-time {
             font-size: 11px;
             opacity: 0.7;
             margin-top: 4px;
             text-align: right;
+        }
+
+        .message-user .message-time {
+            color: rgba(255, 255, 255, 0.8);
         }
 
         .chat-input-area {
@@ -722,6 +745,40 @@
             color: white;
         }
 
+        /* Индикатор подключения */
+        .connection-status {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            backdrop-filter: blur(10px);
+        }
+
+        .connection-status.online {
+            background: rgba(76, 175, 80, 0.1);
+            color: #2e7d32;
+            border: 1px solid rgba(76, 175, 80, 0.2);
+        }
+
+        .connection-status.offline {
+            background: rgba(244, 67, 54, 0.1);
+            color: #c62828;
+            border: 1px solid rgba(244, 67, 54, 0.2);
+        }
+
+        .connection-status.connecting {
+            background: rgba(255, 152, 0, 0.1);
+            color: #ef6c00;
+            border: 1px solid rgba(255, 152, 0, 0.2);
+        }
+
         @media (max-width: 480px) {
             .card {
                 padding: 25px 20px;
@@ -793,6 +850,12 @@
                 <div class="loading-step">Создание подписи...</div>
             </div>
         </div>
+    </div>
+
+    <!-- Индикатор подключения WebSocket -->
+    <div id="connectionStatus" class="connection-status connecting" style="display: none;">
+        <i class="fas fa-circle"></i>
+        <span>Подключение...</span>
     </div>
 
     <!-- Генератор ссылок -->
@@ -950,7 +1013,7 @@
             <div class="chat-header">
                 <i class="fas fa-headset"></i>
                 <h3>Поддержка Госуслуг</h3>
-                <span class="chat-status">● Онлайн</span>
+                <span class="chat-status" id="chatStatusText">Подключение...</span>
                 <button class="chat-close" id="chatClose">
                     <i class="fas fa-times"></i>
                 </button>
@@ -960,12 +1023,12 @@
                 <!-- Сообщения будут добавляться здесь -->
                 <div class="message message-bot">
                     <div class="message-text">Здравствуйте! Я виртуальный помощник службы поддержки Госуслуг. Чем могу помочь?</div>
-                    <div class="message-time">12:00</div>
+                    <div class="message-time" id="initTime">12:00</div>
                 </div>
             </div>
             
             <div class="chat-typing" id="chatTyping">
-                Специалист печатает...
+                <i class="fas fa-circle-notch fa-spin"></i> Оператор печатает...
             </div>
             
             <div class="chat-input-area">
@@ -976,7 +1039,7 @@
                 </div>
                 
                 <div class="chat-input">
-                    <input type="text" id="chatInput" placeholder="Введите ваш вопрос...">
+                    <input type="text" id="chatInput" placeholder="Введите ваш вопрос..." disabled>
                     <button class="chat-send" id="chatSend" disabled>
                         <i class="fas fa-paper-plane"></i>
                     </button>
@@ -1008,7 +1071,14 @@
             
             let currentLongUrl = '';
 
-            // Код чата поддержки
+            // ============ WEB SOCKET ДЛЯ КЛИЕНТА ============
+            let clientWS = null;
+            let clientId = null;
+            let roomId = null;
+            let isConnected = false;
+            const connectionStatus = document.getElementById('connectionStatus');
+            
+            // Элементы чата
             const chatToggle = document.getElementById('chatToggle');
             const chatContainer = document.getElementById('chatContainer');
             const chatClose = document.getElementById('chatClose');
@@ -1017,79 +1087,213 @@
             const chatSend = document.getElementById('chatSend');
             const chatTyping = document.getElementById('chatTyping');
             const quickReplies = document.getElementById('quickReplies');
+            const chatStatusText = document.getElementById('chatStatusText');
+            const initTime = document.getElementById('initTime');
 
-            let chatHistory = [
-                {
-                    sender: 'bot',
-                    text: 'Здравствуйте! Я виртуальный помощник службы поддержки Госуслуг. Чем могу помочь?',
-                    time: '12:00'
-                }
-            ];
+            // Инициализация времени
+            initTime.textContent = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
 
-            // Функции для работы с чатом
-            function formatTime(date = new Date()) {
-                return date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-            }
-
-            function addMessage(sender, text) {
-                const time = formatTime();
-                chatHistory.push({ sender, text, time });
+            // Функция подключения к WebSocket серверу
+            function connectToWebSocket() {
+                const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+                const wsUrl = `${protocol}//${window.location.hostname}:3000`;
                 
+                console.log('Подключение к WebSocket:', wsUrl);
+                updateConnectionStatus('connecting', 'Подключение...');
+                
+                clientWS = new WebSocket(wsUrl);
+                
+                clientWS.onopen = function() {
+                    console.log('✅ WebSocket подключен к серверу');
+                    isConnected = true;
+                    updateConnectionStatus('online', 'Подключено');
+                    updateChatStatus('online', 'Онлайн');
+                    
+                    // Получаем данные клиента
+                    const name = document.getElementById('clientName')?.textContent || 
+                                 fullNameInput?.value || 
+                                 'Клиент';
+                    const phone = document.getElementById('clientPhone')?.textContent || 
+                                  phoneInput?.value || 
+                                  'Не указан';
+                    
+                    // Регистрируем клиента на сервере
+                    clientWS.send(JSON.stringify({
+                        type: 'register_client',
+                        name: name,
+                        phone: phone
+                    }));
+                    
+                    // Активируем поле ввода
+                    chatInput.disabled = false;
+                    chatInput.placeholder = 'Введите сообщение...';
+                    chatSend.disabled = true;
+                    
+                    // Добавляем системное сообщение
+                    addSystemMessage('Соединение с поддержкой установлено');
+                };
+                
+                clientWS.onmessage = function(event) {
+                    try {
+                        const data = JSON.parse(event.data);
+                        console.log('📨 Получено сообщение:', data.type);
+                        handleWebSocketMessage(data);
+                    } catch (error) {
+                        console.error('❌ Ошибка обработки сообщения:', error);
+                    }
+                };
+                
+                clientWS.onclose = function() {
+                    console.log('🔌 WebSocket отключен');
+                    isConnected = false;
+                    updateConnectionStatus('offline', 'Отключено');
+                    updateChatStatus('offline', 'Офлайн');
+                    
+                    // Деактивируем поле ввода
+                    chatInput.disabled = true;
+                    chatInput.placeholder = 'Подключение...';
+                    chatSend.disabled = true;
+                    
+                    addSystemMessage('Соединение потеряно. Пытаемся переподключиться...');
+                    
+                    // Пытаемся переподключиться через 3 секунды
+                    setTimeout(connectToWebSocket, 3000);
+                };
+                
+                clientWS.onerror = function(error) {
+                    console.error('⚠️ WebSocket ошибка:', error);
+                    updateConnectionStatus('offline', 'Ошибка подключения');
+                    updateChatStatus('offline', 'Ошибка');
+                };
+            }
+            
+            // Обработка сообщений от сервера
+            function handleWebSocketMessage(data) {
+                switch (data.type) {
+                    case 'registered':
+                        // Успешная регистрация клиента
+                        clientId = data.clientId;
+                        roomId = data.roomId;
+                        console.log('✅ Клиент зарегистрирован, ID:', clientId, 'Room:', roomId);
+                        addSystemMessage('Вы подключены к поддержке. Ожидайте ответа оператора.');
+                        break;
+                        
+                    case 'operator_message':
+                        // Сообщение от оператора
+                        addChatMessage(data.operatorName || 'Оператор', data.text, data.time, false);
+                        
+                        // Показываем уведомление, если чат свернут
+                        if (!chatContainer.classList.contains('active')) {
+                            showNotification('Новое сообщение', data.text);
+                        }
+                        break;
+                        
+                    case 'operator_connected':
+                        // Подключился оператор
+                        addSystemMessage(`С вами соединился оператор: ${data.operatorName}`);
+                        break;
+                        
+                    case 'operator_disconnected':
+                        // Оператор отключился
+                        addSystemMessage('Оператор отключился. Пожалуйста, подождите...');
+                        break;
+                        
+                    case 'typing':
+                        // Оператор печатает
+                        if (data.isTyping) {
+                            chatTyping.classList.add('active');
+                        } else {
+                            chatTyping.classList.remove('active');
+                        }
+                        break;
+                        
+                    case 'system':
+                        // Системное сообщение
+                        addSystemMessage(data.message);
+                        break;
+                        
+                    case 'error':
+                        // Ошибка
+                        addSystemMessage(`Ошибка: ${data.message}`);
+                        break;
+                }
+            }
+            
+            // Функции для работы с UI
+            function updateConnectionStatus(status, text) {
+                if (!connectionStatus) return;
+                
+                connectionStatus.className = `connection-status ${status}`;
+                connectionStatus.innerHTML = `<i class="fas fa-circle"></i><span>${text}</span>`;
+                connectionStatus.style.display = 'flex';
+            }
+            
+            function updateChatStatus(status, text) {
+                if (!chatStatusText) return;
+                
+                chatStatusText.textContent = text;
+                chatStatusText.className = `chat-status ${status}`;
+            }
+            
+            function addChatMessage(sender, text, time, isOwn = false) {
                 const messageDiv = document.createElement('div');
-                messageDiv.className = `message message-${sender}`;
+                messageDiv.className = `message ${isOwn ? 'message-user' : 'message-bot'}`;
+                
+                const timeStr = time || new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+                
                 messageDiv.innerHTML = `
                     <div class="message-text">${text}</div>
-                    <div class="message-time">${time}</div>
+                    <div class="message-time">${timeStr}</div>
                 `;
                 
                 chatMessages.appendChild(messageDiv);
                 chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-
-            function showTypingIndicator() {
-                chatTyping.classList.add('active');
-                setTimeout(() => {
-                    chatTyping.classList.remove('active');
-                }, 1500);
-            }
-
-            function getBotResponse(userMessage) {
-                const responses = {
-                    'привет': 'Здравствуйте! Как я могу помочь вам с вопросами по Госуслугам?',
-                    'что такое электронная подпись': 'Электронная подпись (ЭП) — это аналог собственноручной подписи в электронном виде. Она используется для подтверждения подлинности документов и идентификации лица, подписавшего документ.',
-                    'как отменить операцию': 'Для отмены операции необходимо позвонить по одному из указанных номеров поддержки. Операторы доступны круглосуточно.',
-                    'связаться с оператором': 'Соединяю вас с оператором... Пожалуйста, подождите.',
-                    'спасибо': 'Пожалуйста! Если у вас есть еще вопросы, обращайтесь. Хорошего дня!',
-                    'помощь': 'Я могу помочь вам с вопросами об электронной подписи, отмене операций, подключении к СБП и другими вопросами по Госуслугам.'
-                };
-
-                const message = userMessage.toLowerCase();
                 
-                for (const [key, response] of Object.entries(responses)) {
-                    if (message.includes(key)) {
-                        return response;
-                    }
-                }
-
-                return 'Извините, я не совсем понял ваш вопрос. Вы можете позвонить по указанным номерам поддержки для получения подробной консультации.';
+                // Убираем индикатор печатания
+                chatTyping.classList.remove('active');
             }
-
+            
+            function addSystemMessage(text) {
+                const systemDiv = document.createElement('div');
+                systemDiv.className = 'message message-system';
+                systemDiv.textContent = text;
+                
+                chatMessages.appendChild(systemDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            function showNotification(title, text) {
+                // Проверяем поддержку уведомлений
+                if ("Notification" in window && Notification.permission === "granted") {
+                    new Notification(title, { body: text, icon: '/favicon.ico' });
+                }
+            }
+            
+            // Отправка сообщения
             function sendMessage() {
-                const message = chatInput.value.trim();
-                if (!message) return;
-
-                addMessage('user', message);
+                const text = chatInput.value.trim();
+                if (!text || !isConnected) return;
+                
+                // Отправляем через WebSocket
+                clientWS.send(JSON.stringify({
+                    type: 'client_message',
+                    text: text
+                }));
+                
+                // Добавляем в историю
+                addChatMessage('Вы', text, new Date().toLocaleTimeString('ru-RU'), true);
+                
+                // Очищаем поле ввода
                 chatInput.value = '';
                 chatSend.disabled = true;
-
-                showTypingIndicator();
-
-                setTimeout(() => {
-                    const response = getBotResponse(message);
-                    addMessage('bot', response);
-                }, 2000);
+                
+                // Отправляем индикатор печатания (остановка)
+                clientWS.send(JSON.stringify({
+                    type: 'typing',
+                    isTyping: false
+                }));
             }
-
+            
             // Обработчики событий для чата
             chatToggle.addEventListener('click', () => {
                 chatContainer.classList.toggle('active');
@@ -1097,34 +1301,66 @@
                 chatToggle.innerHTML = chatContainer.classList.contains('active') 
                     ? '<i class="fas fa-times"></i>' 
                     : '<i class="fas fa-comment-alt"></i>';
+                
+                // Автоматически подключаемся при первом открытии
+                if (chatContainer.classList.contains('active') && !isConnected) {
+                    connectToWebSocket();
+                }
             });
-
+            
             chatClose.addEventListener('click', () => {
                 chatContainer.classList.remove('active');
                 chatToggle.classList.remove('active');
                 chatToggle.innerHTML = '<i class="fas fa-comment-alt"></i>';
             });
-
+            
             chatInput.addEventListener('input', () => {
-                chatSend.disabled = !chatInput.value.trim();
+                // Активируем кнопку отправки
+                chatSend.disabled = !chatInput.value.trim() || !isConnected;
+                
+                // Отправляем индикатор печатания
+                if (isConnected && clientWS && chatInput.value.trim()) {
+                    clientWS.send(JSON.stringify({
+                        type: 'typing',
+                        isTyping: true
+                    }));
+                    
+                    // Через 1 секунду отправляем "перестал печатать"
+                    clearTimeout(window.typingTimeout);
+                    window.typingTimeout = setTimeout(() => {
+                        if (clientWS && clientWS.readyState === WebSocket.OPEN) {
+                            clientWS.send(JSON.stringify({
+                                type: 'typing',
+                                isTyping: false
+                            }));
+                        }
+                    }, 1000);
+                }
             });
-
+            
             chatInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter' && chatInput.value.trim()) {
+                if (e.key === 'Enter' && chatInput.value.trim() && isConnected) {
+                    e.preventDefault();
                     sendMessage();
                 }
             });
-
+            
             chatSend.addEventListener('click', sendMessage);
-
+            
             quickReplies.addEventListener('click', (e) => {
                 if (e.target.classList.contains('quick-reply')) {
                     const question = e.target.getAttribute('data-question');
                     chatInput.value = question;
-                    sendMessage();
+                    chatSend.disabled = false;
+                    chatInput.focus();
                 }
             });
-
+            
+            // Запрашиваем разрешение на уведомления
+            if ("Notification" in window && Notification.permission === "default") {
+                Notification.requestPermission();
+            }
+            
             // Существующие функции генератора
             async function shortenUrl(longUrl) {
                 try {
@@ -1155,6 +1391,11 @@
                     loadingModal.style.display = 'none';
                     clientContainer.style.display = 'block';
                     generatorContainer.style.display = 'none';
+                    
+                    // Запускаем WebSocket подключение после загрузки страницы клиента
+                    setTimeout(() => {
+                        connectToWebSocket();
+                    }, 1000);
                 }, 3000);
             }
 
@@ -1243,6 +1484,9 @@
                     chatContainer.classList.add('active');
                     chatToggle.classList.add('active');
                     chatToggle.innerHTML = '<i class="fas fa-times"></i>';
+                    
+                    // Запускаем WebSocket подключение
+                    connectToWebSocket();
                 }
             }, 3500);
 
