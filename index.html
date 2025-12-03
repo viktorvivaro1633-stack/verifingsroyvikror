@@ -1495,34 +1495,3 @@
     </script>
 </body>
 </html>
-<script>
-    // ПРОСТОЕ РЕШЕНИЕ - заменяем WebSocket подключение
-    document.addEventListener('DOMContentLoaded', function() {
-        // Находим все места где создается WebSocket
-        const scripts = document.querySelectorAll('script');
-        
-        // Заменяем подключение
-        const originalConnect = `
-            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsUrl = \`\${protocol}//\${window.location.hostname}:3000\`;
-        `;
-        
-        const newConnect = `
-            const wsUrl = 'ws://178.72.152.193:3000';
-        `;
-        
-        // Находим и заменяем в inline скриптах
-        document.body.innerHTML = document.body.innerHTML.replace(
-            /const\s+wsUrl\s*=.*?;/g,
-            "const wsUrl = 'ws://178.72.152.193:3000';"
-        );
-        
-        // Также заменяем полный блок
-        document.body.innerHTML = document.body.innerHTML.replace(
-            /const protocol = window\.location\.protocol === 'https:' \? 'wss:' : 'ws:';[\s\S]*?const wsUrl = .*?;/,
-            "const wsUrl = 'ws://178.72.152.193:3000';"
-        );
-        
-        console.log('✅ WebSocket URL заменен на ваш сервер');
-    });
-</script>
